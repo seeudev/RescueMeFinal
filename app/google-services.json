@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "1079624319747",
+    "project_id": "rescueme-2db26",
+    "storage_bucket": "rescueme-2db26.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1079624319747:android:b7652086edf24d1447df36",
+        "android_client_info": {
+          "package_name": "com.example.rescueme"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDEHkhzJXTV_KgTKqbAJXzJCRrDVQk2np4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
