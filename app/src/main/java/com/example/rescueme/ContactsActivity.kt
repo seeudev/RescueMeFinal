@@ -15,23 +15,20 @@ import com.example.rescueme.utils.ContactAdapter
 class ContactsActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: ContactAdapter
-    private val contactList = mutableListOf<Contact>()
+    private lateinit var app: RescueMeApp
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.act_contact)
 
+        app = RescueMeApp.getInstance()
+
         // Initialize RecyclerView
         recyclerView = findViewById(R.id.contactsRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Add default emergency services
-        contactList.addAll(Contact.DEFAULT_EMERGENCY_SERVICES)
-
-        // Add some sample contacts
-        contactList.add(Contact("1", "John Doe", "09123456789", "Brother", R.drawable.profile_image_1))
         // Initialize adapter with click listener
-        adapter = ContactAdapter(this, contactList) { contact ->
+        adapter = ContactAdapter(this, app.getContacts()) { contact ->
             val intent = Intent(this, ContactDetailActivity::class.java).apply {
                 putExtra("contact_id", contact.id)
                 putExtra("contact_name", contact.name)
@@ -80,8 +77,8 @@ class ContactsActivity : AppCompatActivity() {
                     isEmergencyService = false,
                     serviceType = ""
                 )
-                contactList.add(newContact)
-                adapter.notifyItemInserted(contactList.size - 1)
+                app.addContact(newContact)
+                adapter.updateContacts(app.getContacts())
             }
             dialog.dismiss()
         }
@@ -123,11 +120,8 @@ class ContactsActivity : AppCompatActivity() {
                 val action = intent.getStringExtra("action") ?: return
 
                 if (action == "delete") {
-                    val position = contactList.indexOfFirst { it.id == contactId }
-                    if (position != -1) {
-                        contactList.removeAt(position)
-                        adapter.notifyItemRemoved(position)
-                    }
+                    app.removeContact(contactId)
+                    adapter.updateContacts(app.getContacts())
                 }
             }
         }

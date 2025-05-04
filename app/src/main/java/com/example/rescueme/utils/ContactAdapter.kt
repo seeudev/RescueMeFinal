@@ -11,9 +11,14 @@ import com.example.rescueme.R
 
 class ContactAdapter(
     private val context: ContactsActivity,
-    private val contactList: List<Contact>,
+    private var contactList: MutableList<Contact>,
     private val onContactClick: (Contact) -> Unit
 ) : RecyclerView.Adapter<ContactAdapter.ContactViewHolder>() {
+
+    fun updateContacts(newContacts: MutableList<Contact>) {
+        contactList = newContacts
+        notifyDataSetChanged()
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ContactViewHolder {
         val itemView = LayoutInflater.from(parent.context)
