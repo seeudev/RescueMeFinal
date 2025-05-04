@@ -22,8 +22,18 @@
         android:layout_height="300dp"
         android:layout_below="@+id/textViewEmergencyHelp"
         android:layout_marginTop="30dp"
-        android:background="@drawable/ic_sos"
         android:layout_centerHorizontal="true">
+
+        <Button
+            android:id="@+id/panicButton"
+            android:layout_width="300dp"
+            android:layout_height="300dp"
+            android:layout_gravity="center"
+            android:background="@color/panic_button_colors"
+            android:text="SOS"
+            android:textSize="64sp"
+            android:textColor="#FFFFFF"
+            android:stateListAnimator="@null" />
     </RelativeLayout>
 
     <HorizontalScrollView

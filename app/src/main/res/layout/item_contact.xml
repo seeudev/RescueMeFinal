@@ -22,11 +22,13 @@
             android:layout_centerVertical="true" />
 
         <LinearLayout
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_toEndOf="@+id/profileImageView"
+            android:layout_toStartOf="@+id/arrowImageView"
             android:layout_marginStart="16dp"
+            android:layout_marginEnd="16dp"
             android:layout_centerVertical="true">
 
             <TextView
@@ -45,6 +47,26 @@
                 android:text="Brother"
                 android:textSize="14sp"
                 android:textColor="#757575" />
+
+            <TextView
+                android:id="@+id/phoneNumberTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="+63 912 345 6789"
+                android:textSize="14sp"
+                android:textColor="#757575"
+                android:layout_marginTop="2dp" />
+
+            <TextView
+                android:id="@+id/serviceTypeTextView"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Emergency Service"
+                android:textSize="12sp"
+                android:textColor="#FF0000"
+                android:textStyle="bold"
+                android:visibility="gone"
+                android:layout_marginTop="2dp" />
 
         </LinearLayout>
 
