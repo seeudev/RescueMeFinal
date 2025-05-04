@@ -15,6 +15,7 @@ import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import android.Manifest
+import android.view.View
 
 class ProfilePageActivity : Activity() {
 
@@ -60,14 +61,25 @@ class ProfilePageActivity : Activity() {
                 .show()
         }
 
-        contactButton.setOnClickListener {
-            val intent = Intent(this, ContactsActivity::class.java)
-            startActivity(intent)
+
+        findViewById<View>(R.id.homeButton).setOnClickListener {
+            startActivity(Intent(this, LandingActivity::class.java))
+            finish()
         }
 
-        homeButton.setOnClickListener {
-            val intent = Intent(this, LandingActivity::class.java)
-            startActivity(intent)
+        findViewById<View>(R.id.profileButton).setOnClickListener {
+            startActivity(Intent(this, ProfilePageActivity::class.java))
+            finish()
+        }
+
+        findViewById<View>(R.id.contactButton).setOnClickListener {
+            startActivity(Intent(this, ContactsActivity::class.java))
+            finish()
+        }
+
+        findViewById<View>(R.id.emergencyButton).setOnClickListener {
+            startActivity(Intent(this, EmergencyActivity::class.java))
+            finish()
         }
     }
 

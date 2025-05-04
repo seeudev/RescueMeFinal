@@ -96,20 +96,20 @@ class ContactsActivity : AppCompatActivity() {
             finish()
         }
 
-//        findViewById<View>(R.id.profileButton).setOnClickListener {
-//            startActivity(Intent(this, ProfileActivity::class.java))
-//            finish()
-//        }
-//
-//        findViewById<View>(R.id.notificationsButton).setOnClickListener {
-//            startActivity(Intent(this, NotificationsActivity::class.java))
-//            finish()
-//        }
-//
-//        findViewById<View>(R.id.emergencyServicesButton).setOnClickListener {
-//            startActivity(Intent(this, EmergencyServicesActivity::class.java))
-//            finish()
-//        }
+        findViewById<View>(R.id.profileButton).setOnClickListener {
+            startActivity(Intent(this, ProfilePageActivity::class.java))
+            finish()
+        }
+
+        findViewById<View>(R.id.notificationsButton).setOnClickListener {
+            startActivity(Intent(this, NotificationsActivity::class.java))
+            finish()
+        }
+
+        findViewById<View>(R.id.emergencyButton).setOnClickListener {
+            startActivity(Intent(this, EmergencyActivity::class.java))
+            finish()
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
