@@ -19,7 +19,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/emergencyContactsRecyclerView"
         android:layout_width="match_parent"
-        android:layout_height="250dp"
+        android:layout_height="wrap_content"
         android:layout_below="@id/emergencyContactsTitle"
         android:layout_marginTop="8dp"
         tools:listitem="@layout/item_contact" />
@@ -34,17 +34,11 @@
         android:text="Emergency Guides"
         android:textSize="20sp"
         android:textStyle="bold" />
-    <VideoView
-        android:id="@+id/emergencyVideoView"
-        android:layout_width="match_parent"
-        android:layout_height="200dp"
-        android:layout_above="@id/bottomNavigationView" />
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/emergencyGuidesTitle"
-        android:layout_above="@id/emergencyVideoView"
         android:layout_marginTop="8dp">
 
         <LinearLayout

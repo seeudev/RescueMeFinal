@@ -80,13 +80,12 @@ class LandingActivity : AppCompatActivity() {
         findViewById<RelativeLayout>(R.id.notificationsButton).setOnClickListener {
             Log.e("This is CSIT284", "Notifications button is clicked!")
             Toast.makeText(this, "The Notifications button is clicked!", Toast.LENGTH_LONG).show()
-            // You might want to start a NotificationsActivity here instead
-            // startActivity(Intent(this, NotificationsActivity::class.java))
+            startActivity(Intent(this, NotificationsActivity::class.java))
         }
         findViewById<RelativeLayout>(R.id.emergencyButton).setOnClickListener {
             Log.e("This is CSIT284", "Emergency button is clicked!")
             Toast.makeText(this, "The Emergency button is clicked!", Toast.LENGTH_LONG).show()
-            startActivity(Intent(this, ContactsActivity::class.java))
+            startActivity(Intent(this, EmergencyActivity::class.java))
         }
     }
 

@@ -3,7 +3,6 @@ package com.example.rescueme
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
-import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,7 +13,6 @@ class EmergencyActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: EmergencyAdapter
     private lateinit var app: RescueMeApp
-    private lateinit var videoView: VideoView
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -32,9 +30,6 @@ class EmergencyActivity : AppCompatActivity() {
             // Handle contact click if needed
         }
         recyclerView.adapter = adapter
-
-        // Initialize video view
-        videoView = findViewById(R.id.emergencyVideoView)
 
         // Set up emergency guide cards
         setupEmergencyGuideCards()
@@ -61,8 +56,11 @@ class EmergencyActivity : AppCompatActivity() {
     }
 
     private fun playEmergencyVideo(videoResourceId: Int) {
-        videoView.setVideoPath("android.resource://" + packageName + "/" + videoResourceId)
-        videoView.start()
+        val videoUri = "android.resource://" + packageName + "/" + videoResourceId
+        val intent = Intent(this, VideoPlayerActivity::class.java).apply {
+            putExtra("video_uri", videoUri)
+        }
+        startActivity(intent)
     }
 
     private fun setupNavigationBar() {
