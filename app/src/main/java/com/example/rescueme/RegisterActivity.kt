@@ -7,14 +7,13 @@ import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
-import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.database.ktx.database
 import com.google.firebase.ktx.Firebase
 
 class RegisterActivity : Activity() {
 
-    private lateinit var auth: FirebaseAuth
+    private lateinit var auth: com.google.firebase.auth.FirebaseAuth
     private val database = Firebase.database
 
     override fun onCreate(savedInstanceState: Bundle?) {

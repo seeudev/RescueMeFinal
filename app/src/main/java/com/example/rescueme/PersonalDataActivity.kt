@@ -70,11 +70,10 @@ class PersonalDataActivity : AppCompatActivity() {
 
     private fun updateUserData() {
         val name = nameInput.text.toString().trim()
-        val email = emailInput.text.toString().trim()
         val phone = phoneInput.text.toString().trim()
         val password = passwordInput.text.toString().trim()
 
-        if (name.isEmpty() || email.isEmpty() || phone.isEmpty()) {
+        if (name.isEmpty() || phone.isEmpty()) {
             Toast.makeText(this, "Please fill in all required fields", Toast.LENGTH_SHORT).show()
             return
         }
@@ -87,7 +86,6 @@ class PersonalDataActivity : AppCompatActivity() {
         if (userId.isNotEmpty()) {
             val userData = mapOf(
                 "username" to name,
-                "email" to email,
                 "phone" to phone
             )
 
@@ -108,7 +106,7 @@ class PersonalDataActivity : AppCompatActivity() {
                 .addOnSuccessListener {
                     // Update local app data
                     val app = RescueMeApp.getInstance()
-                    app.saveUserData(name, email, phone, userId)
+                    app.saveUserData(name, emailInput.text.toString(), phone, userId)
                     
                     Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
                     startActivity(Intent(this, ProfilePageActivity::class.java))
