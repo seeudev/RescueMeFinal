@@ -10,7 +10,7 @@ import android.provider.MediaStore
 import android.widget.ImageView
 import android.widget.RelativeLayout
 import android.widget.Toast
-import android.app.Activity
+import androidx.appcompat.app.AppCompatActivity
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -18,7 +18,7 @@ import android.Manifest
 import android.view.View
 import android.widget.TextView
 
-class ProfilePageActivity : Activity() {
+class ProfilePageActivity : AppCompatActivity() {
 
     private lateinit var profileIconImageView: ImageView
     private lateinit var profileNameTextView: TextView
