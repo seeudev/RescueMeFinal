@@ -47,35 +47,59 @@ class RegisterActivity : Activity() {
             ) {
                 Toast.makeText(this, "Fill out all fields completely.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
+            } else if (enteredPassword.length < 6) {
+                Toast.makeText(this, "Password must be at least 6 characters long.", Toast.LENGTH_LONG).show()
+                return@setOnClickListener
             } else if (enteredPassword != enteredConfirmPassword) {
                 Toast.makeText(this, "Passwords do not match.", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             } else {
-                // Instead of Firebase Auth, generate a random ID
-                val userId = database.reference.child("users").push().key
-                if (userId != null) {
-                    val userReference = database.getReference("users").child(userId)
-                    val userMap = mapOf(
-                        "username" to enteredUsername,
-                        "email" to enteredEmail,
-                        "phone" to enteredPhone,
-                        "password" to enteredPassword // (Important: real app should hash this)
-                    )
-                    userReference.setValue(userMap)
-                        .addOnSuccessListener {
-                            // Save user data to RescueMeApp
-                            val app = RescueMeApp.getInstance()
-                            app.saveUserData(enteredUsername, enteredEmail, enteredPhone, userId)
-                            
-                            Toast.makeText(this, "User Registered!", Toast.LENGTH_SHORT).show()
-                            val intent = Intent(this, LoginActivity::class.java)
-                            startActivity(intent)
-                            finish()
+                // Create user with Firebase Auth
+                auth.createUserWithEmailAndPassword(enteredEmail, enteredPassword)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Get the user ID from Firebase Auth
+                            val user = auth.currentUser
+                            val userId = user?.uid
+
+                            if (userId != null) {
+                                // Store additional user data in Realtime Database
+                                val userReference = database.getReference("users").child(userId)
+                                val userMap = mapOf(
+                                    "username" to enteredUsername,
+                                    "email" to enteredEmail,
+                                    "phone" to enteredPhone,
+                                    "createdAt" to System.currentTimeMillis()
+                                )
+                                
+                                // First ensure we're authenticated
+                                if (auth.currentUser != null) {
+                                    userReference.setValue(userMap)
+                                        .addOnSuccessListener {
+                                            // Save user data to RescueMeApp
+                                            val app = RescueMeApp.getInstance()
+                                            app.saveUserData(enteredUsername, enteredEmail, enteredPhone, userId)
+                                            
+                                            Toast.makeText(this, "User Registered!", Toast.LENGTH_SHORT).show()
+                                            val intent = Intent(this, LoginActivity::class.java)
+                                            startActivity(intent)
+                                            finish()
+                                        }
+                                        .addOnFailureListener { e ->
+                                            // Log the specific error
+                                            android.util.Log.e("RegisterActivity", "Database error: ${e.message}", e)
+                                            Toast.makeText(this, "Failed to save user data: ${e.message}", Toast.LENGTH_LONG).show()
+                                        }
+                                } else {
+                                    Toast.makeText(this, "Authentication error: User not properly authenticated", Toast.LENGTH_LONG).show()
+                                }
+                            }
+                        } else {
+                            // Handle registration failure
+                            val errorMessage = task.exception?.message ?: "Registration failed"
+                            Toast.makeText(this, errorMessage, Toast.LENGTH_SHORT).show()
                         }
-                        .addOnFailureListener {
-                            Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()
-                        }
-                }
+                    }
             }
         }
 

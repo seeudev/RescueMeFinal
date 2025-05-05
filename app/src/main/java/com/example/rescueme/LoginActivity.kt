@@ -8,24 +8,32 @@ import android.widget.EditText
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.google.firebase.database.*
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.auth.ktx.auth
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
+import com.google.firebase.database.ktx.database
+import com.google.firebase.ktx.Firebase
 
 class LoginActivity : AppCompatActivity() {
 
-    private lateinit var databaseReference: DatabaseReference
+    private lateinit var auth: FirebaseAuth
+    private val database = Firebase.database
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.act_login)
 
         try {
+            // Initialize Firebase Auth
+            auth = Firebase.auth
+
             val etEmail = findViewById<EditText>(R.id.loginEmail)
             val etPassword = findViewById<EditText>(R.id.loginPassword)
             val buttonLogin = findViewById<Button>(R.id.button_login)
             val textSignUp = findViewById<TextView>(R.id.textViewSignup)
-
-            // Initialize Firebase Database reference
-            databaseReference = FirebaseDatabase.getInstance().getReference("users")
 
             intent?.let {
                 it.getStringExtra("email")?.let { email ->
@@ -52,50 +60,45 @@ class LoginActivity : AppCompatActivity() {
                     return@setOnClickListener
                 }
 
-                // Check users in Firebase Realtime Database by email
-                databaseReference.orderByChild("email").equalTo(enteredEmail)
-                    .addListenerForSingleValueEvent(object : ValueEventListener {
-                        override fun onDataChange(snapshot: DataSnapshot) {
-                            if (snapshot.exists()) {
-                                var foundUser = false
-                                var username = ""
-                                var userId = ""
-                                for (userSnapshot in snapshot.children) {
-                                    val userPassword = userSnapshot.child("password").getValue(String::class.java)
-                                    if (userPassword == enteredPassword) {
-                                        foundUser = true
-                                        username = userSnapshot.child("username").getValue(String::class.java) ?: ""
-                                        userId = userSnapshot.key ?: ""
-                                        break
-                                    }
-                                }
-                                if (foundUser) {
-                                    // Save user data to RescueMeApp
-                                    val app = RescueMeApp.getInstance()
-                                    app.saveUserData(username, enteredEmail, "", userId)
-                                    
-                                    // Login success
-                                    Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
-                                    val intent = Intent(this@LoginActivity, LandingActivity::class.java).apply {
-                                        putExtra("email", enteredEmail)
-                                        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-                                    }
-                                    startActivity(intent)
-                                    finish()
-                                } else {
-                                    // Wrong password
-                                    Toast.makeText(this@LoginActivity, "Invalid password.", Toast.LENGTH_LONG).show()
-                                }
-                            } else {
-                                // Email not found
-                                Toast.makeText(this@LoginActivity, "Email not found.", Toast.LENGTH_LONG).show()
-                            }
-                        }
+                // Sign in with Firebase Auth
+                auth.signInWithEmailAndPassword(enteredEmail, enteredPassword)
+                    .addOnCompleteListener(this) { task ->
+                        if (task.isSuccessful) {
+                            // Get user data from Realtime Database
+                            val userId = auth.currentUser?.uid
+                            if (userId != null) {
+                                database.getReference("users").child(userId)
+                                    .addListenerForSingleValueEvent(object : ValueEventListener {
+                                        override fun onDataChange(snapshot: DataSnapshot) {
+                                            val username = snapshot.child("username").getValue(String::class.java) ?: ""
+                                            val email = snapshot.child("email").getValue(String::class.java) ?: ""
+                                            val phone = snapshot.child("phone").getValue(String::class.java) ?: ""
 
-                        override fun onCancelled(error: DatabaseError) {
-                            Toast.makeText(this@LoginActivity, "Database error: ${error.message}", Toast.LENGTH_LONG).show()
+                                            // Save user data to RescueMeApp
+                                            val app = RescueMeApp.getInstance()
+                                            app.saveUserData(username, email, phone, userId)
+
+                                            // Login success
+                                            Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
+                                            val intent = Intent(this@LoginActivity, LandingActivity::class.java).apply {
+                                                putExtra("email", enteredEmail)
+                                                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                                            }
+                                            startActivity(intent)
+                                            finish()
+                                        }
+
+                                        override fun onCancelled(error: DatabaseError) {
+                                            Toast.makeText(this@LoginActivity, "Database error: ${error.message}", Toast.LENGTH_LONG).show()
+                                        }
+                                    })
+                            }
+                        } else {
+                            // Login failed
+                            val errorMessage = task.exception?.message ?: "Authentication failed"
+                            Toast.makeText(this, errorMessage, Toast.LENGTH_LONG).show()
                         }
-                    })
+                    }
             }
         } catch (e: Exception) {
             Log.e("LoginActivity", "Error in onCreate: ${e.message}")
