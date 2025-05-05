@@ -58,14 +58,20 @@ class LoginActivity : AppCompatActivity() {
                         override fun onDataChange(snapshot: DataSnapshot) {
                             if (snapshot.exists()) {
                                 var foundUser = false
+                                var username = ""
                                 for (userSnapshot in snapshot.children) {
                                     val userPassword = userSnapshot.child("password").getValue(String::class.java)
                                     if (userPassword == enteredPassword) {
                                         foundUser = true
+                                        username = userSnapshot.child("username").getValue(String::class.java) ?: ""
                                         break
                                     }
                                 }
                                 if (foundUser) {
+                                    // Save user data to RescueMeApp
+                                    val app = RescueMeApp.getInstance()
+                                    app.saveUserData(username, enteredEmail, "")
+                                    
                                     // Login success
                                     Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()
                                     val intent = Intent(this@LoginActivity, LandingActivity::class.java).apply {

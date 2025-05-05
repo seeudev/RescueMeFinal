@@ -53,6 +53,11 @@ class ContactDetailActivity : AppCompatActivity() {
         editButton = findViewById(R.id.editButton)
         deleteButton = findViewById(R.id.deleteButton)
 
+        // Set up back button
+        findViewById<ImageView>(R.id.backButton).setOnClickListener {
+            finish()
+        }
+
         // Get contact details from intent
         intent.extras?.let { bundle ->
             contactId = bundle.getString("contact_id", "")
@@ -139,7 +144,7 @@ class ContactDetailActivity : AppCompatActivity() {
             data?.data?.let { uri ->
                 // For now, we'll just use a default image resource since we can't store actual images
                 // In a real app, you would save the image to internal storage and store its path
-                val newImageResourceId = R.drawable.profile_image_1
+                val newImageResourceId = R.drawable.circleavatar
                 contactImage.setImageResource(newImageResourceId)
                 currentImageResourceId = newImageResourceId
                 
