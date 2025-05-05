@@ -58,8 +58,7 @@ class ProfilePageActivity : Activity() {
     private fun setupMenuClickListeners() {
         // Personal Data
         findViewById<View>(R.id.personal_data_card).setOnClickListener {
-            // TODO: Create PersonalDataActivity
-            Toast.makeText(this, "Personal Data screen will be implemented soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, PersonalDataActivity::class.java))
         }
 
         // Settings
