@@ -7,7 +7,7 @@ data class Contact(
     val name: String = "",
     val phoneNumber: String = "",
     val relation: String = "",
-    val profileImageResourceId: Int = R.drawable.profile_image_1,
+    val profileImageResourceId: Int = R.drawable.circleavatar,
     val isEmergencyService: Boolean = false,
     val serviceType: String = ""
 ) {
