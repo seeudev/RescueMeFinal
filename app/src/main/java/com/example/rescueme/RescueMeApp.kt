@@ -17,6 +17,7 @@ class RescueMeApp : Application() {
         private const val KEY_USER_NAME = "user_name"
         private const val KEY_USER_EMAIL = "user_email"
         private const val KEY_USER_PHONE = "user_phone"
+        private const val KEY_USER_ID = "user_id"
         
         private var instance: RescueMeApp? = null
 
@@ -74,11 +75,14 @@ class RescueMeApp : Application() {
     }
 
     // User Data Management
-    fun saveUserData(name: String, email: String, phone: String) {
+    fun saveUserData(name: String, email: String, phone: String, userId: String = "") {
         sharedPreferences.edit().apply {
             putString(KEY_USER_NAME, name)
             putString(KEY_USER_EMAIL, email)
             putString(KEY_USER_PHONE, phone)
+            if (userId.isNotEmpty()) {
+                putString(KEY_USER_ID, userId)
+            }
             apply()
         }
     }
@@ -86,4 +90,5 @@ class RescueMeApp : Application() {
     fun getUserName(): String = sharedPreferences.getString(KEY_USER_NAME, "") ?: ""
     fun getUserEmail(): String = sharedPreferences.getString(KEY_USER_EMAIL, "") ?: ""
     fun getUserPhone(): String = sharedPreferences.getString(KEY_USER_PHONE, "") ?: ""
+    fun getUserId(): String = sharedPreferences.getString(KEY_USER_ID, "") ?: ""
 } 

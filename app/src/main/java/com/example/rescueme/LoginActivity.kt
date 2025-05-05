@@ -59,18 +59,20 @@ class LoginActivity : AppCompatActivity() {
                             if (snapshot.exists()) {
                                 var foundUser = false
                                 var username = ""
+                                var userId = ""
                                 for (userSnapshot in snapshot.children) {
                                     val userPassword = userSnapshot.child("password").getValue(String::class.java)
                                     if (userPassword == enteredPassword) {
                                         foundUser = true
                                         username = userSnapshot.child("username").getValue(String::class.java) ?: ""
+                                        userId = userSnapshot.key ?: ""
                                         break
                                     }
                                 }
                                 if (foundUser) {
                                     // Save user data to RescueMeApp
                                     val app = RescueMeApp.getInstance()
-                                    app.saveUserData(username, enteredEmail, "")
+                                    app.saveUserData(username, enteredEmail, "", userId)
                                     
                                     // Login success
                                     Toast.makeText(this@LoginActivity, "Login successful!", Toast.LENGTH_SHORT).show()

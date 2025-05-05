@@ -1,5 +1,6 @@
 package com.example.rescueme
 
+import android.content.Intent
 import android.os.Bundle
 import android.widget.Button
 import android.widget.ImageButton
@@ -8,7 +9,7 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import com.google.android.material.textfield.TextInputEditText
 import com.google.firebase.auth.FirebaseAuth
-import com.google.firebase.firestore.FirebaseFirestore
+import com.google.firebase.database.FirebaseDatabase
 
 class PersonalDataActivity : AppCompatActivity() {
     private lateinit var nameInput: TextInputEditText
@@ -20,7 +21,7 @@ class PersonalDataActivity : AppCompatActivity() {
     private lateinit var backButton: ImageView
 
     private val auth = FirebaseAuth.getInstance()
-    private val db = FirebaseFirestore.getInstance()
+    private val database = FirebaseDatabase.getInstance()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -82,39 +83,18 @@ class PersonalDataActivity : AppCompatActivity() {
         updateButton.isEnabled = false
         updateButton.text = "Updating..."
 
-        val user = auth.currentUser
-        if (user != null) {
-            // Update email if changed
-            if (email != user.email) {
-                user.updateEmail(email)
-                    .addOnCompleteListener { emailTask ->
-                        if (emailTask.isSuccessful) {
-                            updateUserDataInFirestore(name, email, phone, password)
-                        } else {
-                            handleUpdateError("Failed to update email: ${emailTask.exception?.message}")
-                        }
-                    }
-            } else {
-                updateUserDataInFirestore(name, email, phone, password)
-            }
-        } else {
-            handleUpdateError("User not logged in")
-        }
-    }
-
-    private fun updateUserDataInFirestore(name: String, email: String, phone: String, password: String) {
-        val user = auth.currentUser
-        if (user != null) {
-            val userData = hashMapOf(
-                "name" to name,
+        val userId = RescueMeApp.getInstance().getUserId()
+        if (userId.isNotEmpty()) {
+            val userData = mapOf(
+                "username" to name,
                 "email" to email,
                 "phone" to phone
             )
 
             // Update password if provided
             if (password.isNotEmpty()) {
-                user.updatePassword(password)
-                    .addOnCompleteListener { passwordTask ->
+                auth.currentUser?.updatePassword(password)
+                    ?.addOnCompleteListener { passwordTask ->
                         if (!passwordTask.isSuccessful) {
                             handleUpdateError("Failed to update password: ${passwordTask.exception?.message}")
                             return@addOnCompleteListener
@@ -122,20 +102,22 @@ class PersonalDataActivity : AppCompatActivity() {
                     }
             }
 
-            // Update Firestore
-            db.collection("users").document(user.uid)
-                .update(userData as Map<String, Any>)
+            // Update Realtime Database
+            database.reference.child("users").child(userId)
+                .updateChildren(userData)
                 .addOnSuccessListener {
                     // Update local app data
                     val app = RescueMeApp.getInstance()
-                    app.saveUserData(name, email, phone)
+                    app.saveUserData(name, email, phone, userId)
                     
                     Toast.makeText(this, "Profile updated successfully", Toast.LENGTH_SHORT).show()
-                    finish()
+                    startActivity(Intent(this, ProfilePageActivity::class.java))
                 }
                 .addOnFailureListener { e ->
                     handleUpdateError("Failed to update profile: ${e.message}")
                 }
+        } else {
+            handleUpdateError("User ID not found")
         }
     }
 

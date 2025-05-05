@@ -27,6 +27,7 @@ class RegisterActivity : Activity() {
         val usernameEditText = findViewById<EditText>(R.id.et_username)
         val passwordEditText = findViewById<EditText>(R.id.et_password)
         val emailEditText = findViewById<EditText>(R.id.et_email)
+        val phoneEditText = findViewById<EditText>(R.id.et_phone)
         val confirmPasswordEditText = findViewById<EditText>(R.id.et_confirm_password)
         val buttonSignup = findViewById<Button>(R.id.button_signup)
         val textViewLogin = findViewById<TextView>(R.id.textViewLogin)
@@ -35,11 +36,13 @@ class RegisterActivity : Activity() {
             val enteredUsername = usernameEditText.text.toString().trim()
             val enteredPassword = passwordEditText.text.toString().trim()
             val enteredEmail = emailEditText.text.toString().trim()
+            val enteredPhone = phoneEditText.text.toString().trim()
             val enteredConfirmPassword = confirmPasswordEditText.text.toString().trim()
 
             if (enteredUsername.isEmpty() ||
                 enteredPassword.isEmpty() ||
                 enteredEmail.isEmpty() ||
+                enteredPhone.isEmpty() ||
                 enteredConfirmPassword.isEmpty()
             ) {
                 Toast.makeText(this, "Fill out all fields completely.", Toast.LENGTH_LONG).show()
@@ -55,13 +58,19 @@ class RegisterActivity : Activity() {
                     val userMap = mapOf(
                         "username" to enteredUsername,
                         "email" to enteredEmail,
+                        "phone" to enteredPhone,
                         "password" to enteredPassword // (Important: real app should hash this)
                     )
                     userReference.setValue(userMap)
                         .addOnSuccessListener {
+                            // Save user data to RescueMeApp
+                            val app = RescueMeApp.getInstance()
+                            app.saveUserData(enteredUsername, enteredEmail, enteredPhone, userId)
+                            
                             Toast.makeText(this, "User Registered!", Toast.LENGTH_SHORT).show()
                             val intent = Intent(this, LoginActivity::class.java)
                             startActivity(intent)
+                            finish()
                         }
                         .addOnFailureListener {
                             Toast.makeText(this, "Registration failed", Toast.LENGTH_SHORT).show()
@@ -69,7 +78,6 @@ class RegisterActivity : Activity() {
                 }
             }
         }
-
 
         textViewLogin.setOnClickListener {
             val intent = Intent(this, LoginActivity::class.java)
