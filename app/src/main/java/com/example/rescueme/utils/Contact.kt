@@ -22,7 +22,7 @@ data class Contact(
             Contact(
                 id = "1",
                 name = "Cebu City Police",
-                phoneNumber = "911",
+                phoneNumber = "166",
                 relation = "Police",
                 profileImageResourceId = R.drawable.ic_police,
                 isEmergencyService = true,
@@ -31,27 +31,18 @@ data class Contact(
             Contact(
                 id = "2",
                 name = "Cebu City Fire Department",
-                phoneNumber = "911",
+                phoneNumber = "160",
                 relation = "Fire Department",
-                profileImageResourceId = R.drawable.ic_fire,
+                profileImageResourceId = R.drawable.ic_fire_department,
                 isEmergencyService = true,
                 serviceType = "Fire"
             ),
             Contact(
-                id = "3",
-                name = "Cebu City Emergency Medical Services",
-                phoneNumber = "911",
-                relation = "Ambulance",
-                profileImageResourceId = R.drawable.ic_ambulance,
-                isEmergencyService = true,
-                serviceType = "Ambulance"
-            ),
-            Contact(
                 id = "4",
-                name = "Cebu City Disaster Risk Reduction and Management Office",
+                name = "National Disaster Risk Reduction and Management Council",
                 phoneNumber = "911",
                 relation = "Disaster Management",
-                profileImageResourceId = R.drawable.ic_disaster,
+                profileImageResourceId = R.drawable.ic_ndrrmc,
                 isEmergencyService = true,
                 serviceType = "Disaster"
             )
