@@ -24,18 +24,28 @@ class EmergencyActivity : AppCompatActivity() {
         recyclerView = findViewById(R.id.emergencyContactsRecyclerView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        // Get first 3 contacts
-        val emergencyContacts = app.getContacts().take(3)
-        adapter = EmergencyAdapter(this, emergencyContacts) { contact ->
+        // Initialize adapter with empty list first
+        adapter = EmergencyAdapter(this, emptyList()) { contact ->
             // Handle contact click if needed
         }
         recyclerView.adapter = adapter
+
+        // Load contacts from Firebase
+        loadEmergencyContacts()
 
         // Set up emergency guide cards
         setupEmergencyGuideCards()
 
         // Set up navigation
         setupNavigationBar()
+    }
+
+    private fun loadEmergencyContacts() {
+        app.getContacts { contacts ->
+            // Get first 3 contacts
+            val emergencyContacts = contacts.take(3)
+            adapter.updateContacts(emergencyContacts.toMutableList())
+        }
     }
 
     private fun setupEmergencyGuideCards() {
@@ -56,9 +66,8 @@ class EmergencyActivity : AppCompatActivity() {
     }
 
     private fun playEmergencyVideo(videoResourceId: Int) {
-        val videoUri = "android.resource://" + packageName + "/" + videoResourceId
         val intent = Intent(this, VideoPlayerActivity::class.java).apply {
-            putExtra("video_uri", videoUri)
+            putExtra("video_resource_id", videoResourceId)
         }
         startActivity(intent)
     }
@@ -81,6 +90,11 @@ class EmergencyActivity : AppCompatActivity() {
 
         findViewById<View>(R.id.notificationsButton).setOnClickListener {
             startActivity(Intent(this, NotificationsActivity::class.java))
+            finish()
+        }
+
+        findViewById<View>(R.id.emergencyButton).setOnClickListener {
+            startActivity(Intent(this, EmergencyActivity::class.java))
             finish()
         }
     }

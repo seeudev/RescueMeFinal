@@ -51,16 +51,20 @@
             app:tint="#757575" />
 
         <EditText
+            android:id="@+id/searchEditText"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:hint="Search"
             android:gravity="center"
-            android:textSize="16sp"
+            android:textSize="22sp"
             android:textColor="#424242"
             android:textColorHint="#757575"
             android:background="@android:color/transparent"
-            android:layout_marginStart="8dp" />
+            android:layout_marginStart="8dp"
+            android:scrollHorizontally="true"
+            android:ellipsize="end"
+            android:inputType="text" />
 
     </LinearLayout>
 

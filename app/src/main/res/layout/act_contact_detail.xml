@@ -122,9 +122,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_button_outline"
+                android:background="@drawable/rounded_button"
                 android:text="Edit"
-                android:textColor="@color/primary"
+                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@id/callButton" />
 
             <Button
@@ -132,9 +132,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="8dp"
-                android:background="@drawable/rounded_button_outline"
+                android:background="@drawable/rounded_button"
                 android:text="Delete"
-                android:textColor="@color/red"
+                android:textColor="@color/white"
                 app:layout_constraintTop_toBottomOf="@id/editButton" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>

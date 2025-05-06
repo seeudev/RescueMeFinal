@@ -4,6 +4,7 @@ import android.app.AlertDialog
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.widget.Button
 import android.widget.ImageView
@@ -15,6 +16,8 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
+import android.view.View
+import android.widget.EditText
 
 class ContactDetailActivity : AppCompatActivity() {
 
@@ -27,19 +30,21 @@ class ContactDetailActivity : AppCompatActivity() {
     private lateinit var editButton: Button
     private lateinit var deleteButton: Button
     private lateinit var app: RescueMeApp
+    private var currentContact: Contact? = null
 
     private var contactId: String = ""
     private var isEmergencyService: Boolean = false
     private var currentImageResourceId: Int = 0
 
     companion object {
+        private const val TAG = "ContactDetailActivity"
         private const val PERMISSION_REQUEST_CODE = 100
         private const val IMAGE_PICKER_REQUEST_CODE = 101
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_contact_detail)
+        setContentView(R.layout.act_contact_detail)
 
         app = RescueMeApp.getInstance()
 
@@ -61,20 +66,26 @@ class ContactDetailActivity : AppCompatActivity() {
         // Get contact details from intent
         intent.extras?.let { bundle ->
             contactId = bundle.getString("contact_id", "")
-            contactName.text = bundle.getString("contact_name", "")
-            contactPhone.text = bundle.getString("contact_phone", "")
-            contactRelation.text = bundle.getString("contact_relation", "")
+            val name = bundle.getString("contact_name", "")
+            val phone = bundle.getString("contact_phone", "")
+            val relation = bundle.getString("contact_relation", "")
             currentImageResourceId = bundle.getInt("contact_image", R.drawable.circleavatar)
-            contactImage.setImageResource(currentImageResourceId)
             isEmergencyService = bundle.getBoolean("is_emergency_service", false)
-            
-            if (isEmergencyService) {
-                serviceType.visibility = TextView.VISIBLE
-                serviceType.text = bundle.getString("service_type", "")
-                deleteButton.visibility = Button.GONE
-            } else {
-                serviceType.visibility = TextView.GONE
-            }
+            val serviceTypeStr = bundle.getString("service_type", "")
+
+            // Create currentContact object
+            currentContact = Contact(
+                id = contactId,
+                name = name,
+                phoneNumber = phone,
+                relation = relation,
+                profileImageResourceId = currentImageResourceId,
+                isEmergencyService = isEmergencyService,
+                serviceType = serviceTypeStr
+            )
+
+            // Update UI
+            setupUI()
         }
 
         // Set up click listeners
@@ -98,7 +109,9 @@ class ContactDetailActivity : AppCompatActivity() {
 
         editButton.setOnClickListener {
             if (!isEmergencyService) {
-                showEditDialog()
+                currentContact?.let { contact ->
+                    showEditDialog(contact)
+                }
             } else {
                 Toast.makeText(this, "Emergency services cannot be edited", Toast.LENGTH_SHORT).show()
             }
@@ -113,21 +126,50 @@ class ContactDetailActivity : AppCompatActivity() {
         }
     }
 
+    private fun setupUI() {
+        currentContact?.let { contact ->
+            // Set contact details
+            contactName.text = contact.name
+            contactPhone.text = contact.phoneNumber
+            contactRelation.text = contact.relation
+            contactImage.setImageResource(contact.profileImageResourceId)
+            currentImageResourceId = contact.profileImageResourceId
+            
+            if (contact.isEmergencyService) {
+                serviceType.visibility = TextView.VISIBLE
+                serviceType.text = contact.serviceType
+                deleteButton.visibility = Button.GONE
+            } else {
+                serviceType.visibility = TextView.GONE
+            }
+        }
+    }
+
     private fun checkPermissionAndOpenImagePicker() {
-        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE), PERMISSION_REQUEST_CODE)
+        if (ContextCompat.checkSelfPermission(this, Manifest.permission.READ_EXTERNAL_STORAGE)
+            != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(
+                this,
+                arrayOf(Manifest.permission.READ_EXTERNAL_STORAGE),
+                PERMISSION_REQUEST_CODE
+            )
         } else {
             openImagePicker()
         }
     }
 
     private fun openImagePicker() {
-        val intent = Intent(Intent.ACTION_GET_CONTENT)
-        intent.type = "image/*"
+        val intent = Intent(Intent.ACTION_PICK).apply {
+            type = "image/*"
+        }
         startActivityForResult(intent, IMAGE_PICKER_REQUEST_CODE)
     }
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == PERMISSION_REQUEST_CODE) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -148,62 +190,47 @@ class ContactDetailActivity : AppCompatActivity() {
                 contactImage.setImageResource(newImageResourceId)
                 currentImageResourceId = newImageResourceId
                 
-                // Update the contact in the app's data
-                val contacts = app.getContacts()
-                val contactIndex = contacts.indexOfFirst { it.id == contactId }
-                if (contactIndex != -1) {
-                    val updatedContact = contacts[contactIndex].copy(
+                // Update the contact in Firebase
+                currentContact?.let { contact ->
+                    val updatedContact = contact.copy(
                         profileImageResourceId = newImageResourceId
                     )
-                    app.updateContact(updatedContact)
-                    Toast.makeText(this, "Contact image updated!", Toast.LENGTH_SHORT).show()
+                    updateContactInFirebase(updatedContact)
                 }
             }
         }
     }
 
-    private fun showEditDialog() {
+    private fun showEditDialog(contact: Contact) {
         val builder = AlertDialog.Builder(this)
         builder.setTitle("Edit Contact")
 
         val view = layoutInflater.inflate(R.layout.dialog_add_contact, null)
         builder.setView(view)
 
-        val nameEditText = view.findViewById<TextView>(R.id.editTextName)
-        val phoneEditText = view.findViewById<TextView>(R.id.editTextPhone)
-        val relationEditText = view.findViewById<TextView>(R.id.editTextRelation)
+        val nameEditText = view.findViewById<EditText>(R.id.editTextName)
+        val phoneEditText = view.findViewById<EditText>(R.id.editTextPhone)
+        val relationEditText = view.findViewById<EditText>(R.id.editTextRelation)
 
-        // Pre-fill the fields
-        nameEditText.text = contactName.text
-        phoneEditText.text = contactPhone.text
-        relationEditText.text = contactRelation.text
+        // Pre-fill the fields with current contact data
+        nameEditText.setText(contact.name)
+        phoneEditText.setText(contact.phoneNumber)
+        relationEditText.setText(contact.relation)
 
         builder.setPositiveButton("Save") { dialog, _ ->
-            val newName = nameEditText.text.toString().trim()
-            val newPhone = phoneEditText.text.toString().trim()
-            val newRelation = relationEditText.text.toString().trim()
+            val name = nameEditText.text.toString().trim()
+            val phone = phoneEditText.text.toString().trim()
+            val relation = relationEditText.text.toString().trim()
 
-            if (newName.isNotEmpty() && newPhone.isNotEmpty()) {
-                // Update the contact in the app's data
-                val contacts = app.getContacts()
-                val contactIndex = contacts.indexOfFirst { it.id == contactId }
-                if (contactIndex != -1) {
-                    val updatedContact = contacts[contactIndex].copy(
-                        name = newName,
-                        phoneNumber = newPhone,
-                        relation = newRelation,
-                        profileImageResourceId = currentImageResourceId
-                    )
-                    app.updateContact(updatedContact)
-                    
-                    // Update UI
-                    contactName.text = newName
-                    contactPhone.text = newPhone
-                    contactRelation.text = newRelation
-                    Toast.makeText(this, "Contact updated!", Toast.LENGTH_SHORT).show()
-                }
-            } else {
-                Toast.makeText(this, "Name and phone number cannot be empty", Toast.LENGTH_SHORT).show()
+            if (name.isNotEmpty() && phone.isNotEmpty()) {
+                val updatedContact = contact.copy(
+                    name = name,
+                    phoneNumber = phone,
+                    relation = relation
+                )
+                updateContactInFirebase(updatedContact)
+                setResult(RESULT_OK)
+                finish()
             }
             dialog.dismiss()
         }
@@ -215,17 +242,75 @@ class ContactDetailActivity : AppCompatActivity() {
         builder.show()
     }
 
+    private fun updateContactInFirebase(updatedContact: Contact) {
+        val currentUser = app.getFirebaseAuth().currentUser
+        if (currentUser == null) {
+            Log.e(TAG, "No authenticated user found")
+            Toast.makeText(this, "Please log in to update contacts", Toast.LENGTH_SHORT).show()
+            return
+        }
+
+        val userId = currentUser.uid
+        Log.d(TAG, "Updating contact for user: $userId")
+
+        // Create a map of the contact data
+        val contactData = mapOf(
+            "id" to updatedContact.id,
+            "name" to updatedContact.name,
+            "phoneNumber" to updatedContact.phoneNumber,
+            "relation" to updatedContact.relation,
+            "isEmergencyService" to updatedContact.isEmergencyService,
+            "serviceType" to updatedContact.serviceType
+        )
+
+        app.getFirebaseDatabase().getReference("users")
+            .child(userId)
+            .child("contacts")
+            .child(updatedContact.id)
+            .setValue(contactData)
+            .addOnSuccessListener {
+                Log.d(TAG, "Successfully updated contact: ${updatedContact.name}")
+                Toast.makeText(this, "Contact updated successfully", Toast.LENGTH_SHORT).show()
+                currentContact = updatedContact
+                setupUI()
+            }
+            .addOnFailureListener { e ->
+                Log.e(TAG, "Error updating contact: ${e.message}")
+                Toast.makeText(this, "Error updating contact: ${e.message}", Toast.LENGTH_SHORT).show()
+            }
+    }
+
     private fun showDeleteConfirmationDialog() {
         AlertDialog.Builder(this)
             .setTitle("Delete Contact")
             .setMessage("Are you sure you want to delete this contact?")
             .setPositiveButton("Delete") { dialog, _ ->
-                // Return to contacts list with delete result
-                setResult(RESULT_OK, Intent().apply {
-                    putExtra("contact_id", contactId)
-                    putExtra("action", "delete")
-                })
-                finish()
+                val currentUser = app.getFirebaseAuth().currentUser
+                if (currentUser == null) {
+                    Log.e(TAG, "No authenticated user found")
+                    Toast.makeText(this, "Please log in to delete contacts", Toast.LENGTH_SHORT).show()
+                    return@setPositiveButton
+                }
+
+                val userId = currentUser.uid
+                Log.d(TAG, "Deleting contact for user: $userId")
+
+                app.getFirebaseDatabase().getReference("users")
+                    .child(userId)
+                    .child("contacts")
+                    .child(contactId)
+                    .removeValue()
+                    .addOnSuccessListener {
+                        Log.d(TAG, "Successfully deleted contact: $contactId")
+                        Toast.makeText(this, "Contact deleted successfully", Toast.LENGTH_SHORT).show()
+                        setResult(RESULT_OK)
+                        finish()
+                    }
+                    .addOnFailureListener { e ->
+                        Log.e(TAG, "Error deleting contact: ${e.message}")
+                        Toast.makeText(this, "Error deleting contact: ${e.message}", Toast.LENGTH_SHORT).show()
+                    }
+                dialog.dismiss()
             }
             .setNegativeButton("Cancel") { dialog, _ ->
                 dialog.cancel()
