@@ -27,6 +27,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:text="Contact Details"
+            android:textAppearance="@style/TextAppearance.RescueMe.Headline1"
             android:textColor="@color/black"
             android:textSize="20sp"
             android:textStyle="bold" />

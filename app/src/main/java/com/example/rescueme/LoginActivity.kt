@@ -82,8 +82,12 @@ class LoginActivity : AppCompatActivity() {
                                                 val app = RescueMeApp.getInstance()
                                                 app.saveUserData(username, email, phone, userId)
 
-                                                // Check if emergency contact exists
-                                                val hasEmergencyContact = snapshot.child("emergencyContact").exists()
+                                                // Check if emergency contact exists in contacts collection
+                                                val hasEmergencyContact = snapshot.child("contacts")
+                                                    .children
+                                                    .any { contactSnapshot ->
+                                                        contactSnapshot.child("relation").getValue(String::class.java) == "Emergency Contact"
+                                                    }
                                                 Log.d(TAG, "Emergency contact exists: $hasEmergencyContact")
 
                                                 // Login success

@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Name"
+        android:textAppearance="@style/TextAppearance.RescueMe.Body1"
         android:inputType="textPersonName"
         android:maxLines="1" />
 
@@ -18,6 +19,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Phone Number"
+        android:textAppearance="@style/TextAppearance.RescueMe.Body1"
         android:inputType="phone"
         android:maxLines="1"
         android:layout_marginTop="8dp" />
@@ -27,6 +29,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:hint="Relation (Optional)"
+        android:textAppearance="@style/TextAppearance.RescueMe.Body1"
         android:inputType="text"
         android:maxLines="1"
         android:layout_marginTop="8dp" />

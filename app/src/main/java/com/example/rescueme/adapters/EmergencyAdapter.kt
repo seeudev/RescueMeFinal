@@ -1,4 +1,4 @@
-package com.example.rescueme.utils
+package com.example.rescueme.adapters
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +8,7 @@ import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rescueme.EmergencyActivity
 import com.example.rescueme.R
+import com.example.rescueme.models.Contact
 
 class EmergencyAdapter(
     private val context: EmergencyActivity,

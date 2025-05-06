@@ -7,7 +7,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.rescueme.utils.EmergencyAdapter
+import com.example.rescueme.adapters.EmergencyAdapter
 
 class EmergencyActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
@@ -26,6 +26,16 @@ class EmergencyActivity : AppCompatActivity() {
 
         // Initialize adapter with empty list first
         adapter = EmergencyAdapter(this, emptyList()) { contact ->
+            val intent = Intent(this, ContactDetailActivity::class.java).apply {
+                putExtra("contact_id", contact.id)
+                putExtra("contact_name", contact.name)
+                putExtra("contact_phone", contact.phoneNumber)
+                putExtra("contact_relation", contact.relation)
+                putExtra("contact_image", contact.profileImageResourceId)
+                putExtra("is_emergency_service", contact.isEmergencyService)
+                putExtra("service_type", contact.serviceType)
+            }
+            startActivity(intent)
             // Handle contact click if needed
         }
         recyclerView.adapter = adapter

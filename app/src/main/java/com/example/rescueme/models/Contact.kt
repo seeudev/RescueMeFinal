@@ -1,4 +1,4 @@
-package com.example.rescueme.utils
+package com.example.rescueme.models
 
 import com.example.rescueme.R
 import com.google.firebase.database.Exclude

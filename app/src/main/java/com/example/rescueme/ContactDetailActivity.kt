@@ -11,7 +11,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import com.example.rescueme.utils.Contact
+import com.example.rescueme.models.Contact
 import android.Manifest
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat

@@ -22,7 +22,7 @@
         android:layout_gravity="center"
         android:layout_marginTop="5dp"
         android:text="Welcome to RescueMe"
-        android:textAppearance="@style/TextAppearance.RescueMe.Headline1"
+        android:fontFamily="@font/montserrat_bold"
         android:textColor="@color/black"
         android:textSize="28sp"
         android:textStyle="bold" />
@@ -67,10 +67,6 @@
             android:inputType="textPassword"
             android:id="@+id/loginPassword"
             android:hint="Password" />
-        <TextView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="Forgot your password?" />
 
     </LinearLayout>
 

@@ -35,6 +35,7 @@ class LandingActivity : AppCompatActivity() {
     private val handler = Handler(Looper.getMainLooper())
     private lateinit var fusedLocationClient: FusedLocationProviderClient
     private val LOCATION_PERMISSION_REQUEST_CODE = 1001
+    private val SMS_PERMISSION_REQUEST_CODE = 1002
     private lateinit var auth: FirebaseAuth
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -50,7 +51,11 @@ class LandingActivity : AppCompatActivity() {
         
         panicButton.setOnClickListener {
             if (checkLocationPermission()) {
-                showConfirmationDialog()
+                if (checkSmsPermission()) {
+                    showConfirmationDialog()
+                } else {
+                    requestSmsPermission()
+                }
             } else {
                 requestLocationPermission()
             }
@@ -59,7 +64,11 @@ class LandingActivity : AppCompatActivity() {
         // Long press detection
         panicButton.setOnLongClickListener {
             if (checkLocationPermission()) {
-                sendEmergencyAlert()
+                if (checkSmsPermission()) {
+                    sendEmergencyAlert()
+                } else {
+                    requestSmsPermission()
+                }
             } else {
                 requestLocationPermission()
             }
@@ -112,17 +121,49 @@ class LandingActivity : AppCompatActivity() {
         )
     }
 
+    private fun checkSmsPermission(): Boolean {
+        return ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.SEND_SMS
+        ) == PackageManager.PERMISSION_GRANTED &&
+        ContextCompat.checkSelfPermission(
+            this,
+            Manifest.permission.READ_SMS
+        ) == PackageManager.PERMISSION_GRANTED
+    }
+
+    private fun requestSmsPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(
+                Manifest.permission.SEND_SMS,
+                Manifest.permission.READ_SMS
+            ),
+            SMS_PERMISSION_REQUEST_CODE
+        )
+    }
+
     override fun onRequestPermissionsResult(
         requestCode: Int,
         permissions: Array<out String>,
         grantResults: IntArray
     ) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        if (requestCode == LOCATION_PERMISSION_REQUEST_CODE) {
-            if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show()
-            } else {
-                Toast.makeText(this, "Location permission is required for emergency alerts", Toast.LENGTH_LONG).show()
+        when (requestCode) {
+            LOCATION_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "Location permission granted", Toast.LENGTH_SHORT).show()
+                } else {
+                    Toast.makeText(this, "Location permission is required for emergency alerts", Toast.LENGTH_LONG).show()
+                }
+            }
+            SMS_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    Toast.makeText(this, "SMS permission granted", Toast.LENGTH_SHORT).show()
+                    showConfirmationDialog()
+                } else {
+                    Toast.makeText(this, "SMS permission is required to send emergency alerts", Toast.LENGTH_LONG).show()
+                }
             }
         }
     }
@@ -155,59 +196,60 @@ class LandingActivity : AppCompatActivity() {
         if (checkLocationPermission()) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 location?.let {
-                    // Get emergency contact details
-                    database.getReference("users/$userId/emergencyContact")
+                    // Get emergency contact details from contacts collection
+                    database.getReference("users/$userId/contacts")
+                        .orderByChild("relation")
+                        .equalTo("Emergency Contact")
+                        .limitToFirst(1)
                         .get()
                         .addOnSuccessListener { snapshot ->
-                            val contactName = snapshot.child("name").getValue(String::class.java)
-                            val contactPhone = snapshot.child("phone").getValue(String::class.java)
-                            
-                            if (contactName != null && contactPhone != null) {
-                                // Create emergency message
-                                val message = """
-                                    EMERGENCY ALERT!
-                                    ${auth.currentUser?.displayName ?: "User"} is in need of immediate assistance.
-                                    Current Location: ${location.latitude}, ${location.longitude}
-                                    Time: ${SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault()).format(Date())}
-                                """.trimIndent()
+                            if (snapshot.exists()) {
+                                val contact = snapshot.children.first()
+                                val contactName = contact.child("name").getValue(String::class.java)
+                                val contactPhone = contact.child("phoneNumber").getValue(String::class.java)
                                 
-                                // Send SMS to emergency contact
-                                try {
-                                    val smsManager = SmsManager.getDefault()
-                                    smsManager.sendTextMessage(
-                                        contactPhone,
-                                        null,
-                                        message,
-                                        null,
-                                        null
-                                    )
+                                if (contactName != null && contactPhone != null) {
+                                    // Create emergency message
+                                    val message = """
+                                        EMERGENCY ALERT!
+
+                                        ${auth.currentUser?.displayName ?: "User"} requires urgent help.
+
+                                        Location: [Link to Maps/Directions] (${location.latitude}, ${location.longitude})
+                                        Time of Alert: ${SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())} (${SimpleDateFormat("MMMM d, yyyy", Locale.getDefault()).format(Date())})
+
+                                        Panic Button Pressed
+                                    """.trimIndent()
                                     
-                                    // Also send to emergency services
-//                                    val emergencyServices = mapOf(
-//                                        "Fire Department" to "160",
-//                                        "Police" to "166",
-//                                        "NDRRMC" to "911"
-//                                    )
-//
-//                                    emergencyServices.forEach { (_, number) ->
-//                                        smsManager.sendTextMessage(
-//                                            number,
-//                                            null,
-//                                            message,
-//                                            null,
-//                                            null
-//                                        )
-//                                    }
-                                    
-                                    Toast.makeText(this, "Emergency alert sent successfully!", Toast.LENGTH_LONG).show()
-                                } catch (e: Exception) {
-                                    Toast.makeText(this, "Failed to send emergency alert: ${e.message}", Toast.LENGTH_LONG).show()
+                                    // Send SMS to emergency contact
+                                    try {
+                                        val smsManager = SmsManager.getDefault()
+                                        smsManager.sendTextMessage(
+                                            contactPhone,
+                                            null,
+                                            message,
+                                            null,
+                                            null
+                                        )
+                                        
+                                        // Log the SMS sending attempt
+                                        Log.d("EmergencyAlert", "Attempting to send SMS to: $contactPhone")
+                                        Log.d("EmergencyAlert", "Message content: $message")
+                                        
+                                        Toast.makeText(this, "Emergency alert sent successfully!", Toast.LENGTH_LONG).show()
+                                    } catch (e: Exception) {
+                                        Log.e("EmergencyAlert", "Failed to send SMS: ${e.message}", e)
+                                        Toast.makeText(this, "Failed to send emergency alert: ${e.message}", Toast.LENGTH_LONG).show()
+                                    }
+                                } else {
+                                    Toast.makeText(this, "Emergency contact details are incomplete!", Toast.LENGTH_LONG).show()
                                 }
                             } else {
-                                Toast.makeText(this, "Emergency contact not found!", Toast.LENGTH_LONG).show()
+                                Toast.makeText(this, "No emergency contact found! Please add an emergency contact in the Contacts section.", Toast.LENGTH_LONG).show()
                             }
                         }
                         .addOnFailureListener {
+                            Log.e("EmergencyAlert", "Failed to get emergency contact details", it)
                             Toast.makeText(this, "Failed to get emergency contact details", Toast.LENGTH_LONG).show()
                         }
                 } ?: run {
@@ -221,5 +263,6 @@ class LandingActivity : AppCompatActivity() {
 
     companion object {
         private const val LOCATION_PERMISSION_REQUEST_CODE = 1001
+        private const val SMS_PERMISSION_REQUEST_CODE = 1002
     }
 }

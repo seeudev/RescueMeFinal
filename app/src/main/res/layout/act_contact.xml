@@ -6,41 +6,48 @@
     android:layout_height="match_parent"
     android:background="#F5F5F5">
 
-    <TextView
-        android:id="@+id/textViewContacts"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="20dp"
-        android:text="Contacts"
-        android:fontFamily="@font/montserrat_bold"
-        android:textSize="28sp"
-        android:textStyle="bold"
-        android:textColor="#212121" />
 
-    <TextView
-        android:id="@+id/textViewAdd"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentTop="true"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="22dp"
-        android:layout_marginEnd="16dp"
-        android:text="Add +"
-        android:fontFamily="@font/montserrat_bold"
-        android:textSize="16sp"
-        android:textColor="@color/red" />
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:elevation="4dp">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="Contacts"
+            android:textAppearance="@style/TextAppearance.RescueMe.Headline1"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/textViewAdd"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginEnd="16dp"
+            android:layout_gravity="right|center_vertical"
+            android:text="Add +"
+            android:fontFamily="@font/montserrat_medium"
+            android:textStyle="normal"
+            android:textColor="@color/red"
+            android:textSize="14sp" />
+
+    </androidx.appcompat.widget.Toolbar>
 
     <LinearLayout
         android:id="@+id/searchBar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/textViewContacts"
+        android:layout_below="@+id/toolbar"
         android:layout_marginTop="16dp"
         android:layout_marginStart="16dp"
         android:layout_marginEnd="16dp"
-
         android:orientation="horizontal"
         android:padding="8dp">
 
@@ -58,15 +65,16 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="8dp"
             android:layout_weight="1"
-            android:background="@android:color/transparent"
+            android:background="#d3d3d3"
             android:ellipsize="end"
             android:gravity="center"
             android:hint="Search"
+            android:paddingStart="-40dp"
             android:inputType="text"
             android:scrollHorizontally="true"
             android:textColor="#424242"
             android:textColorHint="#757575"
-            android:textSize="22sp" />
+            android:textSize="18sp" />
 
     </LinearLayout>
 
@@ -75,6 +83,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/searchBar"
+        android:layout_above="@id/bottomNavigationView"
         android:layout_marginTop="16dp"
         tools:listitem="@layout/item_contact" />
 

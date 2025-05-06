@@ -110,8 +110,15 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Input atleast 1 Emergency Contact for the SOS function"
-            android:textAppearance="@style/TextAppearance.RescueMe.Body1"
+            android:text="Input atleast 1 Emergency Contact for the SOS Panic Button function"
+            android:textSize="12sp"
+            android:textStyle="bold"
+            android:layout_marginBottom="4dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Note: This contact is the receiving end of your SOS Panic Button"
+
             android:textSize="12sp"
             android:textStyle="bold"
             android:layout_marginBottom="16dp"/>

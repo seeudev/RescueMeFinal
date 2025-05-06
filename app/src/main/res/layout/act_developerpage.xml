@@ -70,6 +70,7 @@
                     android:textAppearance="@style/TextAppearance.RescueMe.Headline1"
                     android:textSize="24sp"
                     android:textStyle="bold"
+                    android:textColor="@color/black"
                     android:layout_marginTop="16dp" />
 
                 <TextView
@@ -86,7 +87,7 @@
                     android:id="@+id/dev1Bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="I'm an IT Enthusiast based in the Philippines focused on building everything from web-based apps, and games. While I'm not building those I enjoy my freetime playing games or making videos on the side."
+                    android:text="Based in the Philippines, this IT enthusiast finds joy in building everything from web-based applications to games. Outside of development, his leisure time is spent playing games or creating videos on the side."
                     android:textAppearance="@style/TextAppearance.RescueMe.Body1"
                     android:textColor="@color/gray"
                     android:textSize="16sp"
@@ -165,6 +166,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="April John A. Sultan"
+                    android:textColor="@color/black"
                     android:textAppearance="@style/TextAppearance.RescueMe.Headline1"
                     android:textSize="24sp"
                     android:textStyle="bold"
@@ -184,7 +186,7 @@
                     android:id="@+id/dev2Bio"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Short bio about the developer goes here. This can be multiple lines of text describing their background and interests."
+                    android:text="Driven 2nd-year BS IT student aspiring to be a developer. Actively building programming skills and exploring technologies with a strong desire to create innovative solutions. Proactive and eager to learn the craft of software development."
                     android:textAppearance="@style/TextAppearance.RescueMe.Body1"
                     android:textColor="@color/gray"
                     android:textSize="16sp"

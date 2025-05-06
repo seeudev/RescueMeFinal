@@ -11,6 +11,7 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.SEND_SMS" />
+    <uses-permission android:name="android.permission.READ_SMS" />
     <uses-permission android:name="android.permission.INTERNET" />
     <application
         android:name=".RescueMeApp"
@@ -26,35 +27,43 @@
         <activity
             android:name=".InitialSetupActivity"
             android:exported="false"
-            android:theme="@style/Theme.RescueMe" />
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ProfilePageActivity"
             android:exported="false"
-            android:theme="@style/Theme.RescueMe" />
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ContactsActivity"
             android:exported="false"
-            android:theme="@style/Theme.RescueMe" />
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".SettingsActivity"
             android:exported="false"
-            android:theme="@style/Theme.RescueMe" />
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".DevPageActivity"
             android:exported="false"
-            android:theme="@style/Theme.RescueMe" />
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".LandingActivity"
             android:exported="false"
-            android:theme="@style/Theme.RescueMe" />
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".RegisterActivity"
             android:exported="false"
-            android:theme="@style/Theme.RescueMe" />
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".LoginActivity"
             android:exported="true"
-            android:theme="@style/Theme.RescueMe">
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -63,24 +72,29 @@
         <activity
             android:name=".ContactDetailActivity"
             android:exported="false"
-            android:theme="@style/Theme.RescueMe" />
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".EmergencyActivity"
             android:exported="false"
-            android:theme="@style/Theme.RescueMe" />
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".NotificationsActivity"
             android:exported="false"
-            android:theme="@style/Theme.RescueMe" />
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".VideoPlayerActivity"
             android:exported="false"
             android:theme="@style/Theme.RescueMe"
-            android:configChanges="orientation|screenSize" />
+            android:configChanges="orientation|screenSize"
+            android:screenOrientation="landscape"/>
         <activity 
             android:name=".PersonalDataActivity"
             android:exported="false"
-            android:theme="@style/Theme.RescueMe" />
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
     </application>
 
 </manifest>
