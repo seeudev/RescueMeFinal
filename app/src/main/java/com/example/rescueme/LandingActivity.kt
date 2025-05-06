@@ -3,6 +3,7 @@ package com.example.rescueme
 import android.Manifest
 import android.content.Intent
 import android.content.pm.PackageManager
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
@@ -28,6 +29,7 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.*
+import androidx.cardview.widget.CardView
 
 class LandingActivity : AppCompatActivity() {
 
@@ -103,6 +105,57 @@ class LandingActivity : AppCompatActivity() {
             Log.e("This is CSIT284", "Emergency button is clicked!")
             Toast.makeText(this, "The Emergency button is clicked!", Toast.LENGTH_LONG).show()
             startActivity(Intent(this, EmergencyActivity::class.java))
+        }
+
+        // Add click listener for the injury card
+        findViewById<CardView>(R.id.cardViewInjury)?.setOnClickListener {
+            startActivity(Intent(this, InjuryChecklistActivity::class.java))
+        }
+
+        // Add click listener for the accident card
+        findViewById<CardView>(R.id.cardAccident).setOnClickListener {
+            startActivity(Intent(this, AccidentChecklistActivity::class.java))
+        }
+
+        // Add click listener for the bleeding card
+        findViewById<CardView>(R.id.bleedingCard).setOnClickListener {
+            startActivity(Intent(this, BleedingChecklistActivity::class.java))
+        }
+
+        // Add click listener for the cant breathe card
+        findViewById<CardView>(R.id.cardViewCantBreathe).setOnClickListener {
+            startActivity(Intent(this, CantBreatheChecklistActivity::class.java))
+        }
+
+        // Add click listener for the chest pain card
+        findViewById<CardView>(R.id.chestPainCard).setOnClickListener {
+            val intent = Intent(this, ChestPainChecklistActivity::class.java)
+            startActivity(intent)
+        }
+
+        // Add click listener for the unconscious card
+        findViewById<CardView>(R.id.cardViewUnconscious).setOnClickListener {
+            val intent = Intent(this, UnconsciousChecklistActivity::class.java)
+            startActivity(intent)
+        }
+
+        //Add click listener for ambulance card
+        findViewById<CardView>(R.id.cardViewAmbulance).setOnClickListener{
+            try {
+                val intent = Intent(Intent.ACTION_CALL)
+                intent.data = Uri.parse("tel:911")
+                startActivity(intent)
+            } catch (e: Exception) {
+                Toast.makeText(this, "Failed to make emergency call: ${e.message}", Toast.LENGTH_LONG).show()
+                // Fallback to dialer if direct call fails
+                try {
+                    val dialIntent = Intent(Intent.ACTION_DIAL)
+                    dialIntent.data = Uri.parse("tel:911")
+                    startActivity(dialIntent)
+                } catch (e: Exception) {
+                    Toast.makeText(this, "Failed to open dialer: ${e.message}", Toast.LENGTH_LONG).show()
+                }
+            }
         }
     }
 

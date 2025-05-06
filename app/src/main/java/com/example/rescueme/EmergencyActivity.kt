@@ -48,6 +48,8 @@ class EmergencyActivity : AppCompatActivity() {
 
         // Set up navigation
         setupNavigationBar()
+
+
     }
 
     private fun loadEmergencyContacts() {
@@ -59,19 +61,24 @@ class EmergencyActivity : AppCompatActivity() {
     }
 
     private fun setupEmergencyGuideCards() {
-        // Injury card
-        findViewById<CardView>(R.id.injuryCard).setOnClickListener {
-            playEmergencyVideo(R.raw.injury_treatment)
+        // Add click listener for the injury card
+        findViewById<CardView>(R.id.injuryCard)?.setOnClickListener {
+            startActivity(Intent(this, InjuryChecklistActivity::class.java))
         }
 
-        // Bleeding card
+        // Add click listener for the accident card
+//        findViewById<CardView>(R.id.cardAccident).setOnClickListener {
+//            startActivity(Intent(this, AccidentChecklistActivity::class.java))
+//        }
+
+        // Add click listener for the bleeding card
         findViewById<CardView>(R.id.bleedingCard).setOnClickListener {
-            playEmergencyVideo(R.raw.bleeding_treatment)
+            startActivity(Intent(this, BleedingChecklistActivity::class.java))
         }
 
-        // Breathing card
+        // Add click listener for the cant breathe card
         findViewById<CardView>(R.id.breathingCard).setOnClickListener {
-            playEmergencyVideo(R.raw.breathing_treatment)
+            startActivity(Intent(this, CantBreatheChecklistActivity::class.java))
         }
     }
 

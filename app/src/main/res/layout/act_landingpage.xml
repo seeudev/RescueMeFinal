@@ -139,7 +139,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewAccident"
+                android:id="@+id/cardAccident"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -239,7 +239,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewBleeding"
+                android:id="@+id/bleedingCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -339,7 +339,7 @@
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewChestPain"
+                android:id="@+id/chestPainCard"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_margin="8dp"
@@ -437,9 +437,6 @@
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
-
-
-
         </LinearLayout>
     </HorizontalScrollView>
 
