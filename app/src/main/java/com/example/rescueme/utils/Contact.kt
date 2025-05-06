@@ -9,12 +9,12 @@ data class Contact(
     val phoneNumber: String = "",
     val relation: String = "",
     @get:Exclude
-    val profileImageResourceId: Int = R.drawable.circleavatar,
+    val profileImageResourceId: Int = R.drawable.ic_circleavatar,
     val isEmergencyService: Boolean = false,
     val serviceType: String = ""
 ) {
     // Required empty constructor for Firebase
-    constructor() : this("", "", "", "", R.drawable.circleavatar, false, "")
+    constructor() : this("", "", "", "", R.drawable.ic_circleavatar, false, "")
 
     companion object {
         // Default emergency services for Cebu City

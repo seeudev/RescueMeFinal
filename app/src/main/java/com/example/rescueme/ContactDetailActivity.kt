@@ -16,7 +16,6 @@ import android.Manifest
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import android.view.View
 import android.widget.EditText
 
 class ContactDetailActivity : AppCompatActivity() {
@@ -69,7 +68,7 @@ class ContactDetailActivity : AppCompatActivity() {
             val name = bundle.getString("contact_name", "")
             val phone = bundle.getString("contact_phone", "")
             val relation = bundle.getString("contact_relation", "")
-            currentImageResourceId = bundle.getInt("contact_image", R.drawable.circleavatar)
+            currentImageResourceId = bundle.getInt("contact_image", R.drawable.ic_circleavatar)
             isEmergencyService = bundle.getBoolean("is_emergency_service", false)
             val serviceTypeStr = bundle.getString("service_type", "")
 
@@ -186,7 +185,7 @@ class ContactDetailActivity : AppCompatActivity() {
             data?.data?.let { uri ->
                 // For now, we'll just use a default image resource since we can't store actual images
                 // In a real app, you would save the image to internal storage and store its path
-                val newImageResourceId = R.drawable.circleavatar
+                val newImageResourceId = R.drawable.ic_circleavatar
                 contactImage.setImageResource(newImageResourceId)
                 currentImageResourceId = newImageResourceId
                 

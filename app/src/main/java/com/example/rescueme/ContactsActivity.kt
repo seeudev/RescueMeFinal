@@ -192,7 +192,7 @@ class ContactsActivity : AppCompatActivity() {
                     name = name,
                     phoneNumber = phone,
                     relation = relation,
-                    profileImageResourceId = R.drawable.circleavatar,
+                    profileImageResourceId = R.drawable.ic_circleavatar,
                     isEmergencyService = false,
                     serviceType = ""
                 )

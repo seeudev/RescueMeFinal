@@ -49,6 +49,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="12sp"
                     android:layout_below="@+id/homeIcon"
+                    android:textAppearance="@style/TextAppearance.RescueMe.Nav"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="4dp" />
             </RelativeLayout>
@@ -75,6 +76,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="12sp"
                     android:layout_below="@+id/contactIcon"
+                    android:textAppearance="@style/TextAppearance.RescueMe.Nav"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="4dp" />
             </RelativeLayout>
@@ -101,6 +103,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="12sp"
                     android:layout_below="@+id/emergencyIcon"
+                    android:textAppearance="@style/TextAppearance.RescueMe.Nav"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="4dp" />
             </RelativeLayout>
@@ -127,6 +130,7 @@
                     android:textSize="11sp"
                     android:textColor="#FFFFFF"
                     android:layout_below="@+id/notificationsIcon"
+                    android:textAppearance="@style/TextAppearance.RescueMe.Nav"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="4dp" />
             </RelativeLayout>
@@ -153,6 +157,7 @@
                     android:textColor="#FFFFFF"
                     android:textSize="12sp"
                     android:layout_below="@+id/profileIcon"
+                    android:textAppearance="@style/TextAppearance.RescueMe.Nav"
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="4dp" />
             </RelativeLayout>
