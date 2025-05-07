@@ -72,37 +72,39 @@
         android:textSize="20sp"
         android:textStyle="bold"
         android:textColor="@color/black"/>
-    <HorizontalScrollView
-        android:id="@+id/horizontalScrollViewOptions"
+
+    <ScrollView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/quickGuidesTitleText"
         android:layout_marginTop="20dp"
-        android:paddingStart="8dp"
-        android:paddingEnd="8dp">
+        android:layout_above="@+id/bottomNavigationView">
 
-        <LinearLayout
-            android:id="@+id/optionsLayout"
-            android:layout_width="wrap_content"
+        <GridLayout
+            android:id="@+id/gridLayout"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:gravity="center_vertical">
+            android:columnCount="2"
+            android:rowCount="4"
+            android:padding="8dp"
+            android:alignmentMode="alignMargins"
+            android:useDefaultMargins="true">
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewInjury"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_columnWeight="1"
                 app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="#E0E0E0"
-                app:cardElevation="8dp"
+                app:cardElevation="4dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true">
 
                 <RelativeLayout
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:gravity="center">
 
                     <TextView
@@ -110,7 +112,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Someone's"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textColor="@android:color/black"
                         android:layout_centerHorizontal="true" />
 
@@ -119,20 +121,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="injured"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
                         android:layout_below="@+id/textViewInjury1"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="2dp" />
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:src="@drawable/ic_injury"
                         android:layout_below="@+id/textViewInjury2"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="4dp" />
 
                 </RelativeLayout>
 
@@ -140,19 +142,19 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardAccident"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_columnWeight="1"
                 app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="#E0E0E0"
-                app:cardElevation="8dp"
+                app:cardElevation="4dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true">
 
                 <RelativeLayout
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:gravity="center">
 
                     <TextView
@@ -160,7 +162,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="An accident"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textColor="@android:color/black"
                         android:layout_centerHorizontal="true" />
 
@@ -169,20 +171,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="occured"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
                         android:layout_below="@+id/textViewAccident1"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="2dp" />
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:src="@drawable/ic_accident"
                         android:layout_below="@+id/textViewAccident2"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="4dp" />
 
                 </RelativeLayout>
 
@@ -190,19 +192,19 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewAmbulance"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_columnWeight="1"
                 app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="#E0E0E0"
-                app:cardElevation="8dp"
+                app:cardElevation="4dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true">
 
                 <RelativeLayout
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:gravity="center">
 
                     <TextView
@@ -210,7 +212,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="I need an"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textColor="@android:color/black"
                         android:layout_centerHorizontal="true" />
 
@@ -218,21 +220,21 @@
                         android:id="@+id/TextViewAmbulance2"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginTop="4dp"
-                        android:layout_below="@+id/TextViewAmbulance1"
                         android:text="ambulance"
-
+                        android:textSize="16sp"
+                        android:textStyle="bold"
                         android:textColor="@android:color/black"
-                        android:textSize="18sp"
-                        android:textStyle="bold" />
+                        android:layout_below="@+id/TextViewAmbulance1"
+                        android:layout_centerHorizontal="true"
+                        android:layout_marginTop="2dp" />
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_below="@+id/TextViewAmbulance2"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:src="@drawable/ic_ambulance"
+                        android:layout_below="@+id/TextViewAmbulance2"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="4dp" />
 
                 </RelativeLayout>
 
@@ -240,19 +242,19 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/bleedingCard"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_columnWeight="1"
                 app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="#E0E0E0"
-                app:cardElevation="8dp"
+                app:cardElevation="4dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true">
 
                 <RelativeLayout
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:gravity="center">
 
                     <TextView
@@ -260,7 +262,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Someone's"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textColor="@android:color/black"
                         android:layout_centerHorizontal="true" />
 
@@ -269,20 +271,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="bleeding"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
-                        android:layout_below="@+id/TextViewBled1"
                         android:textColor="@android:color/black"
+                        android:layout_below="@+id/TextViewBled1"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="2dp" />
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
-                        android:layout_below="@+id/TextViewBled2"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:src="@drawable/ic_bleeding"
+                        android:layout_below="@+id/TextViewBled2"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="4dp" />
 
                 </RelativeLayout>
 
@@ -290,19 +292,19 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewCantBreathe"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_columnWeight="1"
                 app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="#E0E0E0"
-                app:cardElevation="8dp"
+                app:cardElevation="4dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true">
 
                 <RelativeLayout
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:gravity="center">
 
                     <TextView
@@ -310,7 +312,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Someone can't"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textColor="@android:color/black"
                         android:layout_centerHorizontal="true" />
 
@@ -319,20 +321,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="breathe"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
                         android:layout_below="@+id/TextViewBr1"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="2dp" />
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:src="@drawable/ic_breathe"
                         android:layout_below="@+id/TextViewBr2"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="4dp" />
 
                 </RelativeLayout>
 
@@ -340,19 +342,19 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/chestPainCard"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_columnWeight="1"
                 app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="#E0E0E0"
-                app:cardElevation="8dp"
+                app:cardElevation="4dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true">
 
                 <RelativeLayout
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:gravity="center">
 
                     <TextView
@@ -360,7 +362,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="There's a pain"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textColor="@android:color/black"
                         android:layout_centerHorizontal="true" />
 
@@ -369,20 +371,20 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="in my chest"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
                         android:layout_below="@+id/textViewChestPain1"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="2dp" />
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:src="@drawable/ic_chest"
                         android:layout_below="@+id/textViewChestPain2"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="4dp" />
 
                 </RelativeLayout>
 
@@ -390,19 +392,19 @@
 
             <androidx.cardview.widget.CardView
                 android:id="@+id/cardViewUnconscious"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_margin="8dp"
+                android:layout_columnWeight="1"
                 app:cardCornerRadius="8dp"
                 app:cardBackgroundColor="#E0E0E0"
-                app:cardElevation="8dp"
+                app:cardElevation="4dp"
                 app:cardPreventCornerOverlap="true"
                 app:cardUseCompatPadding="true">
 
                 <RelativeLayout
-                    android:layout_width="150dp"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="16dp"
+                    android:padding="12dp"
                     android:gravity="center">
 
                     <TextView
@@ -410,7 +412,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Someone is"
-                        android:textSize="16sp"
+                        android:textSize="14sp"
                         android:textColor="@android:color/black"
                         android:layout_centerHorizontal="true" />
 
@@ -419,26 +421,27 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="unconscious"
-                        android:textSize="18sp"
+                        android:textSize="16sp"
                         android:textStyle="bold"
                         android:textColor="@android:color/black"
                         android:layout_below="@+id/textViewUnconscious1"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
+                        android:layout_marginTop="2dp" />
 
                     <ImageView
-                        android:layout_width="40dp"
-                        android:layout_height="40dp"
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
                         android:src="@drawable/ic_unconscious"
                         android:layout_below="@+id/textViewUnconscious2"
                         android:layout_centerHorizontal="true"
-                        android:layout_marginTop="8dp" />
+                        android:layout_marginTop="4dp" />
 
                 </RelativeLayout>
 
             </androidx.cardview.widget.CardView>
-        </LinearLayout>
-    </HorizontalScrollView>
+
+        </GridLayout>
+    </ScrollView>
 
     <RelativeLayout
         android:id="@+id/bottomNavigationView"
