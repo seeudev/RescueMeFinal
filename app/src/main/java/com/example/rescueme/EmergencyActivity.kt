@@ -157,34 +157,12 @@ class EmergencyActivity : AppCompatActivity() {
     }
 
     private fun openGoogleMaps(latitude: Double, longitude: Double) {
-        // First try to open Google Maps specifically
-        val gmmIntentUri = Uri.parse("geo:$latitude,$longitude?q=$latitude,$longitude(My Current Location)")
-        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
-            setPackage("com.google.android.apps.maps")
-        }
-
-        if (mapIntent.resolveActivity(packageManager) != null) {
-            startActivity(mapIntent)
-        } else {
-            // If Google Maps is not installed, try to open any map application
-            val genericMapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
-            if (genericMapIntent.resolveActivity(packageManager) != null) {
-                startActivity(genericMapIntent)
-            } else {
-                // If no map application is available, show a dialog with options
-                androidx.appcompat.app.AlertDialog.Builder(this)
-                    .setTitle("No Map Application Found")
-                    .setMessage("Would you like to install Google Maps?")
-                    .setPositiveButton("Install") { _, _ ->
-                        try {
-                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.maps")))
-                        } catch (e: android.content.ActivityNotFoundException) {
-                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps")))
-                        }
-                    }
-                    .setNegativeButton("Cancel", null)
-                    .show()
-            }
+        try {
+            val mapsUrl = "https://www.google.com/maps/search/?api=1&query=$latitude,$longitude"
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse(mapsUrl))
+            startActivity(intent)
+        } catch (e: Exception) {
+            android.util.Log.e("EmergencyActivity", "Error opening Google Maps: ${e.message}", e)
         }
     }
 

@@ -17,6 +17,7 @@ import androidx.core.content.ContextCompat
 import android.Manifest
 import android.view.View
 import android.widget.TextView
+import androidx.appcompat.app.AlertDialog
 
 class ProfilePageActivity : AppCompatActivity() {
 
@@ -78,13 +79,21 @@ class ProfilePageActivity : AppCompatActivity() {
 
         // Logout
         findViewById<View>(R.id.logout_card).setOnClickListener {
-            // Clear user data and return to login screen
-            val app = RescueMeApp.getInstance()
-            app.saveUserData("", "", "")
-            val intent = Intent(this, LoginActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-            startActivity(intent)
-            finish()
+            // Show confirmation dialog
+            AlertDialog.Builder(this)
+                .setTitle("Logout")
+                .setMessage("Are you sure you want to logout?")
+                .setPositiveButton("Yes") { _, _ ->
+                    // Clear user data and return to login screen
+                    val app = RescueMeApp.getInstance()
+                    app.saveUserData("", "", "")
+                    val intent = Intent(this, LoginActivity::class.java)
+                    intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                    startActivity(intent)
+                    finish()
+                }
+                .setNegativeButton("No", null)
+                .show()
         }
 
         // Profile picture click
