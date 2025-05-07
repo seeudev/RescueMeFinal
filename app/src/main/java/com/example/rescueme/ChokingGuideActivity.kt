@@ -25,7 +25,7 @@ class ChokingGuideActivity : AppCompatActivity() {
 
         // Set up video thumbnail click listener
         videoThumbnail.setOnClickListener {
-            // TODO: Replace with actual video URL
+
             val videoUrl = "android.resource://${packageName}/${R.raw.breathing_treatment}"
             val intent = Intent(this, VideoPlayerActivity::class.java).apply {
                 putExtra("videoUrl", videoUrl)

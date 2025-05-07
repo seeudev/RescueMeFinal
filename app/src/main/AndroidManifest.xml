@@ -141,6 +141,21 @@
             android:theme="@style/Theme.RescueMe"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".FireEmergencyGuideActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".EarthquakeEmergencyGuideActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".FloodEmergencyGuideActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".AboutRescueMeActivity"
             android:exported="false"
             android:theme="@style/Theme.RescueMe"

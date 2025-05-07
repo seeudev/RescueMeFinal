@@ -197,24 +197,19 @@ class EmergencyActivity : AppCompatActivity() {
     }
 
     private fun setupEmergencyGuideCards() {
-        // Add click listener for the injury card
-        findViewById<CardView>(R.id.injuryCard)?.setOnClickListener {
-            startActivity(Intent(this, InjuryChecklistActivity::class.java))
+        // Add click listener for the Emergency Guide card
+        findViewById<CardView>(R.id.emergencyFireGuideCard)?.setOnClickListener {
+            startActivity(Intent(this, FireEmergencyGuideActivity::class.java))
         }
 
-        // Add click listener for the accident card
-//        findViewById<CardView>(R.id.cardAccident).setOnClickListener {
-//            startActivity(Intent(this, AccidentChecklistActivity::class.java))
-//        }
-
-        // Add click listener for the bleeding card
-        findViewById<CardView>(R.id.bleedingCard).setOnClickListener {
-            startActivity(Intent(this, BleedingChecklistActivity::class.java))
+        // Add click listener for the Earthquake Guide card
+        findViewById<CardView>(R.id.emergencyEarthquakeGuideCard)?.setOnClickListener {
+            startActivity(Intent(this, EarthquakeEmergencyGuideActivity::class.java))
         }
 
-        // Add click listener for the cant breathe card
-        findViewById<CardView>(R.id.breathingCard).setOnClickListener {
-            startActivity(Intent(this, CantBreatheChecklistActivity::class.java))
+        // Add click listener for the Flood Guide card
+        findViewById<CardView>(R.id.emergencyFloodGuideCard)?.setOnClickListener {
+            startActivity(Intent(this, FloodEmergencyGuideActivity::class.java))
         }
     }
 
