@@ -73,8 +73,7 @@ class ProfilePageActivity : AppCompatActivity() {
 
         // About App
         findViewById<View>(R.id.about_app_card).setOnClickListener {
-            // TODO: Create AboutAppActivity
-            Toast.makeText(this, "About App screen will be implemented soon", Toast.LENGTH_SHORT).show()
+            startActivity(Intent(this, AboutRescueMeActivity::class.java))
         }
 
         // Logout

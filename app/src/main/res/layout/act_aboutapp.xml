@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@color/white"
+        android:elevation="4dp"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/backButton"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_gravity="start|center_vertical"
+            android:src="@drawable/ic_back"
+            android:padding="4dp"
+            android:contentDescription="Back" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="About RescueMe"
+            android:textAppearance="@style/TextAppearance.RescueMe.Headline1"
+            android:textColor="@color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+    </androidx.appcompat.widget.Toolbar>
+
+    <TextView
+        android:id="@+id/aboutTitle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/toolbar"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:text="About RescueMe"
+        android:textAppearance="@style/TextAppearance.RescueMe.Headline2"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/aboutDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/aboutTitle"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ic_rectanglebackground1"
+        android:padding="16dp"
+        android:text="RescueMe is a user-friendly emergency assistance application designed to help users effectively handle medical, natural disaster, or safety crises . The app provides quick access to essential tools, including alerts, CPR instructions, emergency services, and real-time updates ."
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    <TextView
+        android:id="@+id/Features"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="25dp"
+        android:text="Key Features "
+        android:layout_below="@id/aboutDescription"
+        android:textAppearance="@style/TextAppearance.RescueMe.Headline2"
+        android:textColor="@color/black"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
+    <RelativeLayout
+        android:id="@+id/featuresContainer"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/Features"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="16dp"
+        android:background="@drawable/ic_rectanglebackground">
+
+        <TextView
+            android:id="@+id/featureLogin"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="10dp"
+            android:layout_marginEnd="0dp"
+            android:padding="16dp"
+            android:text="Login Functionality"
+            android:textColor="@color/white"
+            android:textSize="16sp" />
+
+        <View
+            android:id="@+id/line1"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/featureLogin"
+            android:background="@drawable/line" /> <TextView
+        android:id="@+id/featurePanic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line1"
+        android:padding="16dp"
+        android:text="Panic Button"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+        <View
+            android:id="@+id/line2"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/featurePanic"
+            android:background="@drawable/line" /> <TextView
+        android:id="@+id/featureSOS"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line2"
+        android:padding="16dp"
+        android:text="SOS Alerts"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+        <View
+            android:id="@+id/line3"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/featureSOS"
+            android:background="@drawable/line" /> <TextView
+        android:id="@+id/featureCPR"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line3"
+        android:padding="16dp"
+        android:text="CPR Guide"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+        <View
+            android:id="@+id/line4"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/featureCPR"
+            android:background="@drawable/line" /> <TextView
+        android:id="@+id/featureLiveNotifications"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line4"
+        android:padding="16dp"
+        android:text="Live Emergency Notifications"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+        <View
+            android:id="@+id/line5"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/featureLiveNotifications"
+            android:background="@drawable/line" /> <TextView
+        android:id="@+id/featureEmergencyNumbers"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line5"
+        android:padding="16dp"
+        android:text="Emergency Contact Numbers"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+        <View
+            android:id="@+id/line6"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/featureEmergencyNumbers"
+            android:background="@drawable/line" /> <TextView
+        android:id="@+id/featureAccidentSteps"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/line6"
+        android:padding="16dp"
+        android:text="Accident Steps"
+        android:textColor="@color/white"
+        android:textSize="16sp" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

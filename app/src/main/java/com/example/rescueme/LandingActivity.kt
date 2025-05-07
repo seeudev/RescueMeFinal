@@ -1,8 +1,14 @@
 package com.example.rescueme
 
 import android.Manifest
+import android.app.Activity
+import android.app.PendingIntent
+import android.content.BroadcastReceiver
+import android.content.Context
 import android.content.Intent
+import android.content.IntentFilter
 import android.content.pm.PackageManager
+import android.location.Geocoder
 import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
@@ -30,6 +36,11 @@ import com.google.firebase.database.FirebaseDatabase
 import java.text.SimpleDateFormat
 import java.util.*
 import androidx.cardview.widget.CardView
+import java.io.IOException
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class LandingActivity : AppCompatActivity() {
 
@@ -139,7 +150,22 @@ class LandingActivity : AppCompatActivity() {
             startActivity(intent)
         }
 
-        //Add click listener for ambulance card
+        // Add click listener for the choking card
+        findViewById<CardView>(R.id.chokingCard)?.setOnClickListener {
+            startActivity(Intent(this, ChokingGuideActivity::class.java))
+        }
+
+        // Add click listener for the CPR card
+        findViewById<CardView>(R.id.cprCard)?.setOnClickListener {
+            startActivity(Intent(this, CprGuideActivity::class.java))
+        }
+
+        // Add click listener for the wound care card
+        findViewById<CardView>(R.id.woundCareCard)?.setOnClickListener {
+            startActivity(Intent(this, WoundCareGuideActivity::class.java))
+        }
+
+        // Add click listener for ambulance card
         findViewById<CardView>(R.id.cardViewAmbulance).setOnClickListener{
             try {
                 val intent = Intent(Intent.ACTION_CALL)
@@ -239,17 +265,64 @@ class LandingActivity : AppCompatActivity() {
         }
     }
 
+    private fun getLocationName(latitude: Double, longitude: Double, callback: (String) -> Unit) {
+        CoroutineScope(Dispatchers.IO).launch {
+            try {
+                val geocoder = Geocoder(this@LandingActivity, Locale.getDefault())
+                val addresses = geocoder.getFromLocation(latitude, longitude, 1)
+                
+                withContext(Dispatchers.Main) {
+                    if (!addresses.isNullOrEmpty()) {
+                        val address = addresses[0]
+                        val locationName = buildString {
+                            // Add street address if available
+                            address.thoroughfare?.let { append(it) }
+                            
+                            // Add sublocality (neighborhood) if available
+                            address.subLocality?.let {
+                                if (isNotEmpty()) append(", ")
+                                append(it)
+                            }
+                            
+                            // Add locality (city) if available
+                            address.locality?.let {
+                                if (isNotEmpty()) append(", ")
+                                append(it)
+                            }
+                            
+                            // Add admin area (state/province) if available
+                            address.adminArea?.let {
+                                if (isNotEmpty()) append(", ")
+                                append(it)
+                            }
+                            
+                            // Add country if available
+                            address.countryName?.let {
+                                if (isNotEmpty()) append(", ")
+                                append(it)
+                            }
+                        }
+                        callback(locationName)
+                    } else {
+                        callback("Unknown Location")
+                    }
+                }
+            } catch (e: IOException) {
+                Log.e("Geocoder", "Error getting location name: ${e.message}")
+                withContext(Dispatchers.Main) {
+                    callback("Unknown Location")
+                }
+            }
+        }
+    }
+
     private fun sendEmergencyAlert() {
         val userId = auth.currentUser?.uid ?: return
         val database = FirebaseDatabase.getInstance()
-        
-        // Get user's current location
-        val fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
-        
+
         if (checkLocationPermission()) {
             fusedLocationClient.lastLocation.addOnSuccessListener { location ->
                 location?.let {
-                    // Get emergency contact details from contacts collection
                     database.getReference("users/$userId/contacts")
                         .orderByChild("relation")
                         .equalTo("Emergency Contact")
@@ -258,56 +331,117 @@ class LandingActivity : AppCompatActivity() {
                         .addOnSuccessListener { snapshot ->
                             if (snapshot.exists()) {
                                 val contact = snapshot.children.first()
-                                val contactName = contact.child("name").getValue(String::class.java)
                                 val contactPhone = contact.child("phoneNumber").getValue(String::class.java)
-                                
-                                if (contactName != null && contactPhone != null) {
-                                    // Create emergency message
-                                    val message = """
-                                        EMERGENCY ALERT!
 
-                                        ${auth.currentUser?.displayName ?: "User"} requires urgent help.
-
-                                        Location: [Link to Maps/Directions] (${location.latitude}, ${location.longitude})
-                                        Time of Alert: ${SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())} (${SimpleDateFormat("MMMM d, yyyy", Locale.getDefault()).format(Date())})
-
-                                        Panic Button Pressed
-                                    """.trimIndent()
-                                    
-                                    // Send SMS to emergency contact
+                                if (contactPhone != null) {
                                     try {
-                                        val smsManager = SmsManager.getDefault()
-                                        smsManager.sendTextMessage(
-                                            contactPhone,
-                                            null,
-                                            message,
-                                            null,
-                                            null
-                                        )
-                                        
-                                        // Log the SMS sending attempt
-                                        Log.d("EmergencyAlert", "Attempting to send SMS to: $contactPhone")
-                                        Log.d("EmergencyAlert", "Message content: $message")
-                                        
-                                        Toast.makeText(this, "Emergency alert sent successfully!", Toast.LENGTH_LONG).show()
+                                        // Validate phone number format
+                                        val phoneNumber = contactPhone.trim()
+                                        if (!phoneNumber.matches(Regex("^\\+?[0-9]{10,15}$"))) {
+                                            Log.e("EmergencyAlert", "Invalid phone number format: $phoneNumber")
+                                            Toast.makeText(this, "Invalid emergency contact phone number format", Toast.LENGTH_LONG).show()
+                                            return@addOnSuccessListener
+                                        }
+
+                                        // Get location name using reverse geocoding
+                                        getLocationName(location.latitude, location.longitude) { locationName ->
+                                            val message = """
+                                            EMERGENCY ALERT!
+
+                                            ${auth.currentUser?.displayName ?: "sender"} requires urgent help.
+
+                                            Location: $locationName (${location.latitude}, ${location.longitude})
+                                            Time of Alert: ${SimpleDateFormat("hh:mm a", Locale.getDefault()).format(Date())} (${SimpleDateFormat("MMMM d, yyyy", Locale.getDefault()).format(Date())})
+
+                                            Panic Button Pressed
+                                        """.trimIndent()
+
+                                            val smsManager = SmsManager.getDefault()
+                                            val sentIntent = PendingIntent.getBroadcast(this, 0, Intent("SMS_SENT"), PendingIntent.FLAG_IMMUTABLE)
+                                            val deliveredIntent = PendingIntent.getBroadcast(this, 0, Intent("SMS_DELIVERED"), PendingIntent.FLAG_IMMUTABLE)
+
+                                            // Register for SMS sent and delivered notifications
+                                            registerReceiver(object : BroadcastReceiver() {
+                                                override fun onReceive(context: Context, intent: Intent) {
+                                                    when (resultCode) {
+                                                        Activity.RESULT_OK -> {
+                                                            Toast.makeText(context, "Emergency alert sent successfully", Toast.LENGTH_SHORT).show()
+                                                            Log.d("EmergencyAlert", "SMS sent successfully to $phoneNumber")
+                                                        }
+                                                        SmsManager.RESULT_ERROR_GENERIC_FAILURE -> {
+                                                            Toast.makeText(context, "Failed to send emergency alert", Toast.LENGTH_SHORT).show()
+                                                            Log.e("EmergencyAlert", "Generic failure in sending SMS to $phoneNumber")
+                                                        }
+                                                        SmsManager.RESULT_ERROR_NO_SERVICE -> {
+                                                            Toast.makeText(context, "No service available", Toast.LENGTH_SHORT).show()
+                                                            Log.e("EmergencyAlert", "No service available for sending SMS to $phoneNumber")
+                                                        }
+                                                        SmsManager.RESULT_ERROR_NULL_PDU -> {
+                                                            Toast.makeText(context, "PDU error in sending alert", Toast.LENGTH_SHORT).show()
+                                                            Log.e("EmergencyAlert", "PDU error when sending SMS to $phoneNumber")
+                                                        }
+                                                        SmsManager.RESULT_ERROR_RADIO_OFF -> {
+                                                            Toast.makeText(context, "Radio is off", Toast.LENGTH_SHORT).show()
+                                                            Log.e("EmergencyAlert", "Radio is off when sending SMS to $phoneNumber")
+                                                        }
+                                                    }
+                                                }
+                                            }, IntentFilter("SMS_SENT"))
+
+                                            registerReceiver(object : BroadcastReceiver() {
+                                                override fun onReceive(context: Context, intent: Intent) {
+                                                    when (resultCode) {
+                                                        Activity.RESULT_OK -> {
+                                                            Log.d("EmergencyAlert", "SMS delivered successfully to $phoneNumber")
+                                                        }
+                                                        Activity.RESULT_CANCELED -> {
+                                                            Log.e("EmergencyAlert", "SMS not delivered to $phoneNumber")
+                                                        }
+                                                    }
+                                                }
+                                            }, IntentFilter("SMS_DELIVERED"))
+
+                                            try {
+                                                // Split message if it's too long
+                                                val messageParts = smsManager.divideMessage(message)
+                                                smsManager.sendMultipartTextMessage(
+                                                    phoneNumber,
+                                                    null,
+                                                    messageParts,
+                                                    ArrayList<PendingIntent>().apply { add(sentIntent) },
+                                                    ArrayList<PendingIntent>().apply { add(deliveredIntent) }
+                                                )
+                                                Log.d("EmergencyAlert", "SMS sending initiated to $phoneNumber")
+                                            } catch (e: Exception) {
+                                                Log.e("EmergencyAlert", "Exception while sending SMS to $phoneNumber: ${e.message}")
+                                                Toast.makeText(this, "Failed to send emergency alert: ${e.message}", Toast.LENGTH_LONG).show()
+                                            }
+                                        }
                                     } catch (e: Exception) {
-                                        Log.e("EmergencyAlert", "Failed to send SMS: ${e.message}", e)
+                                        Log.e("EmergencyAlert", "Exception in sendEmergencyAlert: ${e.message}")
                                         Toast.makeText(this, "Failed to send emergency alert: ${e.message}", Toast.LENGTH_LONG).show()
                                     }
                                 } else {
-                                    Toast.makeText(this, "Emergency contact details are incomplete!", Toast.LENGTH_LONG).show()
+                                    Log.e("EmergencyAlert", "Emergency contact phone number is null")
+                                    Toast.makeText(this, "Emergency contact phone number not found", Toast.LENGTH_LONG).show()
                                 }
                             } else {
-                                Toast.makeText(this, "No emergency contact found! Please add an emergency contact in the Contacts section.", Toast.LENGTH_LONG).show()
+                                Log.e("EmergencyAlert", "No emergency contact found in database")
+                                Toast.makeText(this, "No emergency contact found. Please add an emergency contact in settings.", Toast.LENGTH_LONG).show()
                             }
                         }
-                        .addOnFailureListener {
-                            Log.e("EmergencyAlert", "Failed to get emergency contact details", it)
-                            Toast.makeText(this, "Failed to get emergency contact details", Toast.LENGTH_LONG).show()
+                        .addOnFailureListener { e ->
+                            Log.e("EmergencyAlert", "Failed to fetch emergency contact: ${e.message}")
+                            Toast.makeText(this, "Failed to fetch emergency contact: ${e.message}", Toast.LENGTH_LONG).show()
                         }
                 } ?: run {
+                    Log.e("EmergencyAlert", "Location is null")
                     Toast.makeText(this, "Unable to get current location", Toast.LENGTH_LONG).show()
                 }
+            }
+            .addOnFailureListener { e ->
+                Log.e("EmergencyAlert", "Failed to get location: ${e.message}")
+                Toast.makeText(this, "Failed to get location: ${e.message}", Toast.LENGTH_LONG).show()
             }
         } else {
             requestLocationPermission()

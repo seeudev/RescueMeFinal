@@ -125,6 +125,26 @@
             android:exported="false"
             android:theme="@style/Theme.RescueMe"
             android:screenOrientation="portrait"/>
+        <activity
+            android:name=".ChokingGuideActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".CprGuideActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".WoundCareGuideActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".AboutRescueMeActivity"
+            android:exported="false"
+            android:theme="@style/Theme.RescueMe"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

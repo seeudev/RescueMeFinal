@@ -46,11 +46,14 @@
             android:layout_width="250dp"
             android:layout_height="250dp"
             android:layout_gravity="center"
-            android:background="@color/panic_button_colors"
+            android:background="@drawable/round_button_background"
             android:text="SOS"
             android:textSize="64sp"
             android:textColor="#FFFFFF"
-            android:stateListAnimator="@null" />
+            android:stateListAnimator="@null"
+            android:clickable="true"
+            android:focusable="true"
+            android:elevation="8dp" />
     </RelativeLayout>
     <View
         android:id="@+id/divider"
@@ -80,367 +83,493 @@
         android:layout_marginTop="20dp"
         android:layout_above="@+id/bottomNavigationView">
 
-        <GridLayout
-            android:id="@+id/gridLayout"
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:columnCount="2"
-            android:rowCount="4"
-            android:padding="8dp"
-            android:alignmentMode="alignMargins"
-            android:useDefaultMargins="true">
+            android:orientation="vertical">
+
+            <GridLayout
+                android:id="@+id/gridLayout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:columnCount="2"
+                android:rowCount="4"
+                android:padding="8dp"
+                android:alignmentMode="alignMargins"
+                android:useDefaultMargins="true">
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewInjury"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="#E0E0E0"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/textViewInjury1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Someone's"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/textViewInjury2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="injured"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:layout_below="@+id/textViewInjury1"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="2dp" />
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_injury"
+                            android:layout_below="@+id/textViewInjury2"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardAccident"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="#E0E0E0"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/textViewAccident1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="An accident"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/textViewAccident2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="occured"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:layout_below="@+id/textViewAccident1"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="2dp" />
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_accident"
+                            android:layout_below="@+id/textViewAccident2"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewAmbulance"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="#E0E0E0"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/TextViewAmbulance1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="I need an"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/TextViewAmbulance2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="ambulance"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:layout_below="@+id/TextViewAmbulance1"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="2dp" />
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_ambulance"
+                            android:layout_below="@+id/TextViewAmbulance2"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/bleedingCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="#E0E0E0"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/TextViewBled1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Someone's"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/TextViewBled2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="bleeding"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:layout_below="@+id/TextViewBled1"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="2dp" />
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_bleeding"
+                            android:layout_below="@+id/TextViewBled2"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewCantBreathe"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="#E0E0E0"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/TextViewBr1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Someone can't"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/TextViewBr2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="breathe"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:layout_below="@+id/TextViewBr1"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="2dp" />
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_breathe"
+                            android:layout_below="@+id/TextViewBr2"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/chestPainCard"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="#E0E0E0"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/textViewChestPain1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="There's a pain"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/textViewChestPain2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="in my chest"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:layout_below="@+id/textViewChestPain1"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="2dp" />
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_chest"
+                            android:layout_below="@+id/textViewChestPain2"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+                <androidx.cardview.widget.CardView
+                    android:id="@+id/cardViewUnconscious"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_columnWeight="1"
+                    app:cardCornerRadius="8dp"
+                    app:cardBackgroundColor="#E0E0E0"
+                    app:cardElevation="4dp"
+                    app:cardPreventCornerOverlap="true"
+                    app:cardUseCompatPadding="true">
+
+                    <RelativeLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:padding="12dp"
+                        android:gravity="center">
+
+                        <TextView
+                            android:id="@+id/textViewUnconscious1"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="Someone is"
+                            android:textSize="14sp"
+                            android:textColor="@android:color/black"
+                            android:layout_centerHorizontal="true" />
+
+                        <TextView
+                            android:id="@+id/textViewUnconscious2"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="unconscious"
+                            android:textSize="16sp"
+                            android:textStyle="bold"
+                            android:textColor="@android:color/black"
+                            android:layout_below="@+id/textViewUnconscious1"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="2dp" />
+
+                        <ImageView
+                            android:layout_width="32dp"
+                            android:layout_height="32dp"
+                            android:src="@drawable/ic_unconscious"
+                            android:layout_below="@+id/textViewUnconscious2"
+                            android:layout_centerHorizontal="true"
+                            android:layout_marginTop="4dp" />
+
+                    </RelativeLayout>
+
+                </androidx.cardview.widget.CardView>
+
+            </GridLayout>
+
+            <!-- First Aid Topics Section -->
+            <TextView
+                android:id="@+id/firstAidTopicsTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="32dp"
+                android:layout_marginBottom="16dp"
+                android:text="First Aid Topics"
+                android:textAppearance="@style/TextAppearance.RescueMe.Headline1"
+                android:textSize="20sp"
+                android:textStyle="bold"
+                android:textColor="@color/black"/>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewInjury"
-                android:layout_width="0dp"
+                android:id="@+id/chokingCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="#E0E0E0"
                 app:cardElevation="4dp"
-                app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true">
+                app:cardBackgroundColor="#E0E0E0">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textViewInjury1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Someone's"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:layout_centerHorizontal="true" />
-
-                    <TextView
-                        android:id="@+id/textViewInjury2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="injured"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_below="@+id/textViewInjury1"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp" />
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_injury"
-                        android:layout_below="@+id/textViewInjury2"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_choking"
+                        android:layout_marginEnd="16dp"/>
 
-                </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Choking"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"/>
+
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardAccident"
-                android:layout_width="0dp"
+                android:id="@+id/cprCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="#E0E0E0"
                 app:cardElevation="4dp"
-                app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true">
+                app:cardBackgroundColor="#E0E0E0">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textViewAccident1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="An accident"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:layout_centerHorizontal="true" />
-
-                    <TextView
-                        android:id="@+id/textViewAccident2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="occured"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_below="@+id/textViewAccident1"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp" />
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_accident"
-                        android:layout_below="@+id/textViewAccident2"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_cpr"
+                        android:layout_marginEnd="16dp"/>
 
-                </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="CPR Guide"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"/>
+
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
             <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewAmbulance"
-                android:layout_width="0dp"
+                android:id="@+id/woundCareCard"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
+                android:layout_marginHorizontal="16dp"
+                android:layout_marginBottom="16dp"
                 app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="#E0E0E0"
                 app:cardElevation="4dp"
-                app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true">
+                app:cardBackgroundColor="#E0E0E0">
 
-                <RelativeLayout
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/TextViewAmbulance1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="I need an"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:layout_centerHorizontal="true" />
-
-                    <TextView
-                        android:id="@+id/TextViewAmbulance2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="ambulance"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_below="@+id/TextViewAmbulance1"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp" />
+                    android:orientation="horizontal"
+                    android:padding="16dp"
+                    android:gravity="center_vertical">
 
                     <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_ambulance"
-                        android:layout_below="@+id/TextViewAmbulance2"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
+                        android:layout_width="48dp"
+                        android:layout_height="48dp"
+                        android:src="@drawable/ic_wound_care"
+                        android:layout_marginEnd="16dp"/>
 
-                </RelativeLayout>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Treating a Wound/Bleeding"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="@android:color/black"/>
+
+                </LinearLayout>
 
             </androidx.cardview.widget.CardView>
 
-            <androidx.cardview.widget.CardView
-                android:id="@+id/bleedingCard"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="#E0E0E0"
-                app:cardElevation="4dp"
-                app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/TextViewBled1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Someone's"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:layout_centerHorizontal="true" />
-
-                    <TextView
-                        android:id="@+id/TextViewBled2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="bleeding"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_below="@+id/TextViewBled1"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp" />
-
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_bleeding"
-                        android:layout_below="@+id/TextViewBled2"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewCantBreathe"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="#E0E0E0"
-                app:cardElevation="4dp"
-                app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/TextViewBr1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Someone can't"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:layout_centerHorizontal="true" />
-
-                    <TextView
-                        android:id="@+id/TextViewBr2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="breathe"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_below="@+id/TextViewBr1"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp" />
-
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_breathe"
-                        android:layout_below="@+id/TextViewBr2"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/chestPainCard"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="#E0E0E0"
-                app:cardElevation="4dp"
-                app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textViewChestPain1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="There's a pain"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:layout_centerHorizontal="true" />
-
-                    <TextView
-                        android:id="@+id/textViewChestPain2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="in my chest"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_below="@+id/textViewChestPain1"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp" />
-
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_chest"
-                        android:layout_below="@+id/textViewChestPain2"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-            <androidx.cardview.widget.CardView
-                android:id="@+id/cardViewUnconscious"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_columnWeight="1"
-                app:cardCornerRadius="8dp"
-                app:cardBackgroundColor="#E0E0E0"
-                app:cardElevation="4dp"
-                app:cardPreventCornerOverlap="true"
-                app:cardUseCompatPadding="true">
-
-                <RelativeLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:padding="12dp"
-                    android:gravity="center">
-
-                    <TextView
-                        android:id="@+id/textViewUnconscious1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="Someone is"
-                        android:textSize="14sp"
-                        android:textColor="@android:color/black"
-                        android:layout_centerHorizontal="true" />
-
-                    <TextView
-                        android:id="@+id/textViewUnconscious2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:text="unconscious"
-                        android:textSize="16sp"
-                        android:textStyle="bold"
-                        android:textColor="@android:color/black"
-                        android:layout_below="@+id/textViewUnconscious1"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="2dp" />
-
-                    <ImageView
-                        android:layout_width="32dp"
-                        android:layout_height="32dp"
-                        android:src="@drawable/ic_unconscious"
-                        android:layout_below="@+id/textViewUnconscious2"
-                        android:layout_centerHorizontal="true"
-                        android:layout_marginTop="4dp" />
-
-                </RelativeLayout>
-
-            </androidx.cardview.widget.CardView>
-
-        </GridLayout>
+        </LinearLayout>
     </ScrollView>
 
     <RelativeLayout

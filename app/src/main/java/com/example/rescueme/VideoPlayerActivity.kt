@@ -2,7 +2,7 @@ package com.example.rescueme
 
 import android.net.Uri
 import android.os.Bundle
-import android.widget.ImageButton
+import android.widget.MediaController
 import android.widget.VideoView
 import androidx.appcompat.app.AppCompatActivity
 
@@ -15,17 +15,21 @@ class VideoPlayerActivity : AppCompatActivity() {
 
         videoView = findViewById(R.id.videoView)
         
-        // Get the video URI from the intent
-        val videoUri = intent.getStringExtra("video_uri")
-        if (videoUri != null) {
-            videoView.setVideoURI(Uri.parse(videoUri))
-            videoView.start()
-        }
-
-        // Set up back button
-        findViewById<ImageButton>(R.id.backButton).setOnClickListener {
+        // Get video URL from intent
+        val videoUrl = intent.getStringExtra("videoUrl")
+        if (videoUrl != null) {
+            setupVideoPlayer(videoUrl)
+        } else {
             finish()
         }
+    }
+
+    private fun setupVideoPlayer(videoUrl: String) {
+        val mediaController = MediaController(this)
+        mediaController.setAnchorView(videoView)
+        videoView.setMediaController(mediaController)
+        videoView.setVideoURI(Uri.parse(videoUrl))
+        videoView.start()
     }
 
     override fun onPause() {
@@ -33,8 +37,8 @@ class VideoPlayerActivity : AppCompatActivity() {
         videoView.pause()
     }
 
-    override fun onResume() {
-        super.onResume()
-        videoView.start()
+    override fun onDestroy() {
+        super.onDestroy()
+        videoView.stopPlayback()
     }
 } 

@@ -1,24 +1,39 @@
 package com.example.rescueme
 
+import android.Manifest
 import android.content.Intent
+import android.content.pm.PackageManager
+import android.location.Location
+import android.net.Uri
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.cardview.widget.CardView
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.rescueme.adapters.EmergencyAdapter
+import com.google.android.gms.location.FusedLocationProviderClient
+import com.google.android.gms.location.LocationServices
 
 class EmergencyActivity : AppCompatActivity() {
     private lateinit var recyclerView: RecyclerView
     private lateinit var adapter: EmergencyAdapter
     private lateinit var app: RescueMeApp
+    private lateinit var fusedLocationClient: FusedLocationProviderClient
+
+    companion object {
+        private const val LOCATION_PERMISSION_REQUEST_CODE = 1001
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.act_emergency)
 
         app = RescueMeApp.getInstance()
+        fusedLocationClient = LocationServices.getFusedLocationProviderClient(this)
 
         // Initialize RecyclerView for emergency contacts
         recyclerView = findViewById(R.id.emergencyContactsRecyclerView)
@@ -36,7 +51,6 @@ class EmergencyActivity : AppCompatActivity() {
                 putExtra("service_type", contact.serviceType)
             }
             startActivity(intent)
-            // Handle contact click if needed
         }
         recyclerView.adapter = adapter
 
@@ -49,7 +63,129 @@ class EmergencyActivity : AppCompatActivity() {
         // Set up navigation
         setupNavigationBar()
 
+        // Set up maps card click listener
+        findViewById<CardView>(R.id.mapsCard)?.setOnClickListener {
+            checkLocationPermissionAndOpenMaps()
+        }
+    }
 
+    private fun checkLocationPermissionAndOpenMaps() {
+        when {
+            ContextCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED -> {
+                // Permission is already granted, get location
+                getLastLocation()
+            }
+            ActivityCompat.shouldShowRequestPermissionRationale(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) -> {
+                // Show explanation to the user
+                Toast.makeText(
+                    this,
+                    "Location permission is required to show your current location",
+                    Toast.LENGTH_LONG
+                ).show()
+                requestLocationPermission()
+            }
+            else -> {
+                // Request the permission
+                requestLocationPermission()
+            }
+        }
+    }
+
+    private fun requestLocationPermission() {
+        ActivityCompat.requestPermissions(
+            this,
+            arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
+            LOCATION_PERMISSION_REQUEST_CODE
+        )
+    }
+
+    override fun onRequestPermissionsResult(
+        requestCode: Int,
+        permissions: Array<out String>,
+        grantResults: IntArray
+    ) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        when (requestCode) {
+            LOCATION_PERMISSION_REQUEST_CODE -> {
+                if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    // Permission granted, get location
+                    getLastLocation()
+                } else {
+                    // Permission denied
+                    Toast.makeText(
+                        this,
+                        "Location permission is required to show your current location",
+                        Toast.LENGTH_LONG
+                    ).show()
+                }
+            }
+        }
+    }
+
+    private fun getLastLocation() {
+        if (ActivityCompat.checkSelfPermission(
+                this,
+                Manifest.permission.ACCESS_FINE_LOCATION
+            ) == PackageManager.PERMISSION_GRANTED
+        ) {
+            fusedLocationClient.lastLocation
+                .addOnSuccessListener { location: Location? ->
+                    if (location != null) {
+                        openGoogleMaps(location.latitude, location.longitude)
+                    } else {
+                        Toast.makeText(
+                            this,
+                            "Unable to get your location. Please try again.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                    }
+                }
+                .addOnFailureListener {
+                    Toast.makeText(
+                        this,
+                        "Error getting location: ${it.message}",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+        }
+    }
+
+    private fun openGoogleMaps(latitude: Double, longitude: Double) {
+        // First try to open Google Maps specifically
+        val gmmIntentUri = Uri.parse("geo:$latitude,$longitude?q=$latitude,$longitude(My Current Location)")
+        val mapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri).apply {
+            setPackage("com.google.android.apps.maps")
+        }
+
+        if (mapIntent.resolveActivity(packageManager) != null) {
+            startActivity(mapIntent)
+        } else {
+            // If Google Maps is not installed, try to open any map application
+            val genericMapIntent = Intent(Intent.ACTION_VIEW, gmmIntentUri)
+            if (genericMapIntent.resolveActivity(packageManager) != null) {
+                startActivity(genericMapIntent)
+            } else {
+                // If no map application is available, show a dialog with options
+                androidx.appcompat.app.AlertDialog.Builder(this)
+                    .setTitle("No Map Application Found")
+                    .setMessage("Would you like to install Google Maps?")
+                    .setPositiveButton("Install") { _, _ ->
+                        try {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=com.google.android.apps.maps")))
+                        } catch (e: android.content.ActivityNotFoundException) {
+                            startActivity(Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=com.google.android.apps.maps")))
+                        }
+                    }
+                    .setNegativeButton("Cancel", null)
+                    .show()
+            }
+        }
     }
 
     private fun loadEmergencyContacts() {
