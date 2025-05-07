@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_video_placeholder"/>
+                    android:src="@drawable/thumb_cpr"/>
 
                 <ImageView
                     android:layout_width="64dp"
@@ -50,7 +50,16 @@
             android:textSize="24sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
+            android:layout_marginBottom="2dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Content regarding chest compressions is based on information from [Chest Compressions (CPR Steps)] by [SingaporeCivilDefenceForce], [14 May 2013]."
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
             android:layout_marginBottom="24dp"/>
+
 
         <!-- Instructions Container -->
         <LinearLayout

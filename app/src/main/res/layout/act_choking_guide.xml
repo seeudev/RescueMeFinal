@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_video_placeholder"/>
+                    android:src="@drawable/thumb_choking"/>
 
                 <ImageView
                     android:layout_width="64dp"
@@ -48,6 +48,14 @@
             android:layout_height="wrap_content"
             android:text="What to Do When Someone is Choking"
             android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="2dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Content regarding chest compressions is based on information from [First Aid for Choking Emergencies - Heimlich Maneuver for Adults, Kids and Infants] by [Marshfield Clinic Health System], [9 Feb 2018]."
+            android:textSize="10sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:layout_marginBottom="24dp"/>

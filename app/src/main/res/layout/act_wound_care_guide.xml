@@ -29,7 +29,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:scaleType="centerCrop"
-                    android:src="@drawable/ic_video_placeholder"/>
+                    android:src="@drawable/thumb_wound"/>
 
                 <ImageView
                     android:layout_width="64dp"
@@ -48,6 +48,14 @@
             android:layout_height="wrap_content"
             android:text="How to Treat a Wound and Control Bleeding"
             android:textSize="24sp"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_marginBottom="2dp"/>
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="Content regarding chest compressions is based on information from [How to Treat Cuts and Grazes - First Aid Training - St John Ambulance] by [St John Ambulance], [8 Jan 2015]."
+            android:textSize="10sp"
             android:textStyle="bold"
             android:textColor="@android:color/black"
             android:layout_marginBottom="24dp"/>
